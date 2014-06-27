@@ -27,7 +27,16 @@ Q.animations('goomba', {
   walk: { frames: [0, 1], rate: 1/2 }
 });
 
-require(['./src/player', './src/goomba', './src/boss', './src/mashroom', './src/princess', './src/coin'], function (Player, Boss, Mashroom, Princess, Coin) {
+var objectFiles = [
+  './src/player',
+  './src/goomba',
+  './src/boss',
+  './src/mashroom',
+  './src/princess',
+  './src/coin'
+];
+
+require(objectFiles, function (Player, Boss, Mashroom, Princess, Coin) {
   Q.scene('level1',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/level.json', sheet: 'tiles' }));
