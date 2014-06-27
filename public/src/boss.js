@@ -50,7 +50,7 @@ require(['./src/boss_fire'], function (BossFire) {
 
         this.stage.insert(new Q.BossFire({ x: this.p.x + 30, y: this.p.y, vx: 250, vy: 0 }));
 
-        Q.audio.play('/sounds/boss_fireball.wav');
+        // Q.audio.play('/sounds/boss_fireball.wav');
       }
 
       this.play('walk');
