@@ -1,4 +1,8 @@
 {
+  "repository": {
+    "type":"git",
+    "url":"git@github.com:Jigarsolanki/i-mario.git"
+  },
   "name": "QuitusMario",
   "version": "0.0.0",
   "main": "index.js",
