@@ -19,10 +19,6 @@ Q.animations('boss', {
   walk: { frames: [1, 2, 3, 4, 5], rate: 1/2 }
 });
 
-Q.animations('coin', {
-  shine: { frames: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], rate: 1/10 }
-});
-
 Q.animations('goomba', {
   walk: { frames: [0, 1], rate: 1/2 }
 });
@@ -33,10 +29,10 @@ var objectFiles = [
   './src/boss',
   './src/mashroom',
   './src/princess',
-  './src/coin'
+  './src/beer'
 ];
 
-require(objectFiles, function (Player, Boss, Mashroom, Princess, Coin) {
+require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
   Q.scene('level1',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/level.json', sheet: 'tiles' }));
@@ -53,9 +49,9 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Coin) {
 
     stage.insert(new Q.Princess({ x: 40, y: 0 }));
 
-    stage.insert(new Q.Coin({ x: 300, y: 505 }));
-    stage.insert(new Q.Coin({ x: 330, y: 505 }));
-    stage.insert(new Q.Coin({ x: 360, y: 505 }));
+    stage.insert(new Q.Beer({ x: 300, y: 505 }));
+    stage.insert(new Q.Beer({ x: 330, y: 505 }));
+    stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
     stage.insert(new Q.Mashroom({ x: 495, y: 250 }))
   });
@@ -89,13 +85,12 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Coin) {
     '/images/mario1.png',
     '/images/mario_fireball.gif',
     '/images/boss_fireball.gif',
-    '/images/coin.png',
+    '/images/beer.png',
     '/sounds/fireball.wav',
     '/sounds/boss_fireball.wav',
     '/sounds/mario_die.wav',
     '/sounds/powerup.wav',
-    '/sounds/world_clear.wav',
-    '/sounds/coin.wav'
+    '/sounds/world_clear.wav'
   ];
 
   Q.load(images.join(',') , function() {
@@ -107,7 +102,7 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Coin) {
     Q.sheet('mashroom', '/images/mashroom.png', { tilew: 483, tileh: 480 });
     Q.sheet('fireball', '/images/mario_fireball.gif', { tilew: 20, tileh: 20 });
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
-    Q.sheet('coin', '/images/coin.png', { tilew: 32, tileh: 32 });
+    Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
     Q.stageScene('level1');
   });
 });
