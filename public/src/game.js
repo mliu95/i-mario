@@ -35,19 +35,17 @@ var objectFiles = [
 require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
   Q.scene('level1',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/level.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/levels/01.json', sheet: 'tiles' }));
 
-    stage.insert(new Q.Player({ x: 50, y: 560 }));
+    var player = new Q.Player({ x: 50, y: 100 });
 
-    stage.add('viewport');
+    stage.add("viewport").follow(player);
 
-    // stage.insert(new Q.Goomba({ x: 350, y: 0 }));
-    // stage.insert(new Q.Goomba({ x: 550, y: 0 }));
-    // stage.insert(new Q.Goomba({ x: 750, y: 450 }));
+    stage.insert(player);
 
-    stage.insert(new Q.Boss({ x: 250, y: 70 }));
-
-    stage.insert(new Q.Princess({ x: 40, y: 0 }));
+    stage.insert(new Q.Goomba({ x: 350, y: 100 }));
+    stage.insert(new Q.Goomba({ x: 550, y: 100 }));
+    stage.insert(new Q.Goomba({ x: 750, y: 100 }));
 
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
@@ -77,7 +75,7 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
   images = [
     '/images/mashroom.png',
     '/images/background.png',
-    '/level.json',
+    '/levels/01.json',
     '/images/tiles.png',
     '/images/princess.gif',
     '/images/goomba.png',
