@@ -8,14 +8,6 @@ require(['./src/fireball'], function () {
       Q.input.on('fire', this, 'fireWeapon');
 
       this.on('hit.sprite',function (collision) {
-        if (collision.obj.isA('Princess')) {
-          var princess = collision.obj;
-          this.stage.insert(new Q.Fireball({ x: princess.p.x - 15, y: princess.p.y, vx: -250 }));
-          Q.stageScene('playerDead', 1, { label: "You died! This princess doesn't need rescuing." });
-          this.destroy();
-          Q.audio.play('/sounds/mario_die.wav');
-        }
-
         if (collision.obj.isA('Mashroom')){
           this.p.health += 20;
           Q.state.set("health", this.p.health);
@@ -79,7 +71,11 @@ require(['./src/fireball'], function () {
       } else if(!this.p.jumping && this.p.vy === 0){
         this.p.jumpInput = false;
       }
-      if(this.p.vx > 0) {
+      if(this.p.y > 1000) {
+        Q.stageScene('playerDead', 1, { label: "You died!" });
+        this.destroy();
+        Q.audio.play('/sounds/mario_die.wav');
+      } else if(this.p.vx > 0) {
         this.p.flip='x';
         this.play('run_right');
       } else if(this.p.vx < 0) {
