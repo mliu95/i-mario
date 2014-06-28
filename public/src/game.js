@@ -4,7 +4,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var CURRENT_LEVEL = 'level2';
+var CURRENT_LEVEL = 'level1';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 var playButtles, playerHealth;
@@ -98,17 +98,17 @@ require(objectFiles, function () {
     stage.insert(player);
     player.insertHealthDisplay();
 
-    stage.insert(new Q.Mashroom({x: 300, y:50 }));
-    stage.insert(new Q.Mashroom({x: 290, y:50 }));
-    stage.insert(new Q.Beer({ x: 300, y: 80 }));
-    stage.insert(new Q.Beer({ x: 330, y: 80 }));
-    stage.insert(new Q.Beer({ x: 360, y: 80 }));
-    stage.insert(new Q.Beer({ x: 300, y: 80 }));
-    stage.insert(new Q.Beer({ x: 330, y: 80 }));
-    stage.insert(new Q.Beer({ x: 360, y: 80 }));
-    stage.insert(new Q.Beer({ x: 300, y: 80 }));
-    stage.insert(new Q.Beer({ x: 330, y: 80 }));
-    stage.insert(new Q.Beer({ x: 360, y: 80 }));
+    stage.insert(new Q.Mashroom({x: 300, y:350 }));
+    stage.insert(new Q.Mashroom({x: 290, y:350 }));
+    stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    stage.insert(new Q.Beer({ x: 360, y: 380 }));
+    stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    stage.insert(new Q.Beer({ x: 360, y: 380 }));
+    stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    stage.insert(new Q.Beer({ x: 360, y: 380 }));
 
     stage.insert(new Q.Boss({ x: 700, y: 50 }));
     Q.stageScene('ui', 1);
@@ -169,9 +169,23 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
 
-    stage.insert(new Q.Penguin({ x: 1700, y: 360 }));
+    stage.insert(new Q.Princess({ x: 1700, y: 360 }));
+    stage.insert(new Q.Boss({ x: 1000, y: 360 }));
 
-    var player = new Q.Alex({ x: 1620, y: 20, bullets: playButtles, health: playerHealth });
+    stage.insert(new Q.Mashroom({x: 290, y:350 }));
+    stage.insert(new Q.Mashroom({x: 300, y:350 }));
+    stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    stage.insert(new Q.Beer({ x: 360, y: 380 }));
+    stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    stage.insert(new Q.Beer({ x: 360, y: 380 }));
+    stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    stage.insert(new Q.Beer({ x: 360, y: 380 }));
+
+
+    var player = new Q.Alex({ x: 20, y: 20, bullets: playButtles, health: playerHealth });
     stage.insert(player);
     player.insertHealthDisplay();
     stage.add('viewport').follow(player);
