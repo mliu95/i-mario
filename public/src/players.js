@@ -14,13 +14,11 @@ require(['./src/fireball'], function () {
             this.p.health = 500;
           }
           Q.state.set("health", this.p.health);
-          this.p.bullets += 20;
-          Q.state.set("bullets", this.p.bullets);
           Q.audio.play('/sounds/powerup.wav');
         }
 
         if (collision.obj.isA('Beer')) {
-          this.p.bullets += 10;
+          this.p.bullets += 20;
           Q.state.set("bullets", this.p.bullets);
           Q.audio.play('/sounds/gulp.wav');
         }
@@ -77,6 +75,7 @@ require(['./src/fireball'], function () {
       if(this.p.y > 1000) {
         Q.stageScene('playerDead', 1, { label: "You died!" });
         this.destroy();
+        this.p.healthDisplay.destroy();
         Q.audio.play('/sounds/mario_die.wav');
       } else if(this.p.vx > 0) {
         this.p.flip='x';

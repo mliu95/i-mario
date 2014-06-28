@@ -4,7 +4,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var CURRENT_LEVEL = 'level1';
+var CURRENT_LEVEL = 'debug';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 
@@ -61,6 +61,8 @@ require(objectFiles, function () {
 
     stage.insert(player);
     player.insertHealthDisplay();
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
 
     stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
 
@@ -106,7 +108,7 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
 
-    var player = new Q.Alex({ x: 50, y: 220 });
+    var player = new Q.Alex({ x: 50, y: 50 });
 
     stage.add('viewport').follow(player);
     stage.viewport.offsetX = 130;
@@ -115,14 +117,19 @@ require(objectFiles, function () {
     stage.insert(player);
     player.insertHealthDisplay();
 
-    stage.insert(new Q.Dragon({ x: 500, y: 100 }));
-    stage.insert(new Q.Mashroom({x: 300, y:250 }));
-    stage.insert(new Q.Beer({ x: 300, y: 505 }));
-    stage.insert(new Q.Beer({ x: 330, y: 505 }));
-    stage.insert(new Q.Beer({ x: 360, y: 505 }));
+    stage.insert(new Q.Mashroom({x: 300, y:50 }));
+    stage.insert(new Q.Mashroom({x: 290, y:50 }));
+    stage.insert(new Q.Beer({ x: 300, y: 80 }));
+    stage.insert(new Q.Beer({ x: 330, y: 80 }));
+    stage.insert(new Q.Beer({ x: 360, y: 80 }));
+    stage.insert(new Q.Beer({ x: 300, y: 80 }));
+    stage.insert(new Q.Beer({ x: 330, y: 80 }));
+    stage.insert(new Q.Beer({ x: 360, y: 80 }));
+    stage.insert(new Q.Beer({ x: 300, y: 80 }));
+    stage.insert(new Q.Beer({ x: 330, y: 80 }));
+    stage.insert(new Q.Beer({ x: 360, y: 80 }));
 
-    stage.insert(new Q.Goomba({ x: 495, y: 250 }));
-    stage.insert(new Q.Princess({ x: 200, y: 50 }));
+    stage.insert(new Q.Narwhal({ x: 700, y: 50 }));
     Q.stageScene('ui', 1);
   });
 
@@ -149,13 +156,19 @@ require(objectFiles, function () {
 
     stage.insert(new Q.Mashroom({ x: 2450, y: 150 }));
 
-
     stage.insert(new Q.Goomba({ x: 600, y: 400 }));
     stage.insert(new Q.Goomba({ x: 650, y: 400 }));
     stage.insert(new Q.Goomba({ x: 1150, y: 400 }));
 
     stage.insert(new Q.Penguin({ x: 2150, y: 450 }));
     stage.insert(new Q.Penguin({ x: 2300, y: 450 }));
+
+    var player = new Q.Alex({ x: 50, y: 100 });
+    stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
+    stage.insert(player);
+    player.insertHealthDisplay();
 
     stage.insert(new Q.Dragon({ x: 2300, y: 150 }));
 
@@ -172,6 +185,8 @@ require(objectFiles, function () {
       player.p.y = 20;
     }
     stage.add('viewport').follow(player);
+    // stage.viewport.offsetX = 130;
+    // stage.viewport.offsetY = 200;
 
     stage.insert(player);
   });
@@ -185,14 +200,19 @@ require(objectFiles, function () {
     stage.insert(new Q.MovingBar({ x: 100, y: 200 }));
     stage.insert(new Q.MovingBar({ x: 250, y: 200 }));
 
-  if(!player) {
+    if(!player) {
        player = new Q.Alex({ x: 20, y: 420 });
+    } else {
+      player.p.x = 20;
+      player.p.y = 420;
     }
     stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
     stage.insert(player);
     player.insertHealthDisplay();
 
-    stage.on('complete',function() { Q.stageScene('level3'); });
+    stage.on('complete',function() { alert('You Won!!!')});
   });
 
   Q.scene('playerDead',function(stage) {
