@@ -4,11 +4,9 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-
 var CURRENT_LEVEL = 'level1';
-
-var UiScore = document.getElementById('score');
-var UiFireBalls = document.getElementById('fireballs');
+var UiHealth = document.getElementById("health");
+var UiFireballs = document.getElementById("fireballs");
 
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
@@ -40,18 +38,46 @@ var objectFiles = [
 ];
 
 require(objectFiles, function () {
+  var currentLevel = 'debug';
+  Q.scene(currentLevel,function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
+
+    var player = new Q.Alex({ x: 50, y: 220 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+
+    // stage.insert(new Q.Narwhal({ x: 450, y: 100}));
+    // stage.insert(new Q.Narwhal({ x: 470, y: 550}));
+    //stage.insert(new Q.Narwhal({ x: 480, y: 550}));
+
+
+    // stage.insert(new Q.Penguin({ x: 500, y: 70 }));
+
+    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
+    // stage.insert(new Q.Goomba({ x: 550, y: 100 }));
+    // stage.insert(new Q.Goomba({ x: 750, y: 100 }));
+
+    stage.insert(new Q.Beer({ x: 300, y: 505 }));
+    stage.insert(new Q.Beer({ x: 330, y: 505 }));
+    stage.insert(new Q.Beer({ x: 360, y: 505 }));
+
+    stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
+  });
 
   Q.scene('ui', function(stage){
-    // UiScore.innerHTML = 'Score: ' + Q.state.get('score');
-    // UiFireBalls.innerHTML = 'Fireballs: ' + Q.state.get('fireballs');
+    UiHealth.innerHTML = "Health: " + Q.state.get("health");
+    UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
 
-    // Q.state.on('change.coins',this, function() {
-    //     UiCoins.innerHTML = 'Coins: ' + Q.state.get('coins');
-    // });
+    Q.state.on("change.health", this, function() {
+      UiHealth.innerHTML = "Health: " + Q.state.get("health");
+    });
 
-    // Q.state.on('change.lives',this, function() {
-    //     UiLives.innerHTML = 'Lives: ' + Q.state.get('lives');
-    // });
+    Q.state.on("change.bullets", this, function() {
+      UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
+    });
   });
 
   Q.scene('PlayerDead',function(stage) {
@@ -180,6 +206,7 @@ require(objectFiles, function () {
     '/images/door.png',
     '/sounds/fireball.wav',
     '/sounds/boss_fireball.wav',
+    '/sounds/gulp.wav',
     '/sounds/mario_die.wav',
     '/sounds/powerup.wav',
     '/sounds/world_clear.wav'
@@ -198,5 +225,8 @@ require(objectFiles, function () {
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
     Q.sheet('door', '/images/door.png', { tilew: 188, tileh: 225 });
     Q.stageScene('level1');
+    Q.state.reset({ "bullets": 0, "health": 10000000 });
+    Q.stageScene("ui", 1);
+    Q.stageScene(CURRENT_LEVEL);
   });
 });
