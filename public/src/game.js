@@ -28,6 +28,7 @@ var objectFiles = [
   './src/goomba',
   './src/boss',
   './src/narwhal',
+  './src/dragon',
   './src/mashroom',
   './src/princess',
   './src/beer'
@@ -44,15 +45,15 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
 
     stage.insert(player);
 
-    stage.insert(new Q.Narwhal({ x: 450, y: 350}));
+    // stage.insert(new Q.Narwhal({ x: 450, y: 100}));
     // stage.insert(new Q.Narwhal({ x: 470, y: 550}));
     // stage.insert(new Q.Narwhal({ x: 480, y: 550}));
 
 
-    stage.insert(new Q.Boss({ x: 250, y: 70 }));
-    stage.insert(new Q.Goomba({ x: 350, y: 100 }));
-    stage.insert(new Q.Goomba({ x: 550, y: 100 }));
-    stage.insert(new Q.Goomba({ x: 750, y: 100 }));
+    // stage.insert(new Q.Boss({ x: 250, y: 70 }));
+    stage.insert(new Q.Dragon({ x: 500, y: 100 }));
+    // stage.insert(new Q.Goomba({ x: 550, y: 100 }));
+    // stage.insert(new Q.Goomba({ x: 750, y: 100 }));
 
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
