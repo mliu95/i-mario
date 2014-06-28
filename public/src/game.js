@@ -27,6 +27,7 @@ var objectFiles = [
   './src/player',
   './src/goomba',
   './src/boss',
+  './src/narwhal',
   './src/mashroom',
   './src/princess',
   './src/beer'
