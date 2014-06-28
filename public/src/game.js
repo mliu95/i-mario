@@ -35,9 +35,11 @@ var objectFiles = [
 ];
 
 require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
-  Q.scene('level1',function(stage) {
+  var currentLevel = 'debug';
+
+  Q.scene(currentLevel,function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/levels/01.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
 
     var player = new Q.Player({ x: 50, y: 100 });
 
@@ -51,6 +53,7 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
 
 
     // stage.insert(new Q.Boss({ x: 250, y: 70 }));
+
     stage.insert(new Q.Dragon({ x: 500, y: 100 }));
     // stage.insert(new Q.Goomba({ x: 550, y: 100 }));
     // stage.insert(new Q.Goomba({ x: 750, y: 100 }));
@@ -62,7 +65,7 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
     stage.insert(new Q.Mashroom({ x: 495, y: 250 }))
   });
 
-  Q.scene('endGame',function(stage) {
+  Q.scene('PlayerDead',function(stage) {
     var box = stage.insert(new Q.UI.Container({
       x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
     }));
@@ -72,7 +75,34 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
                                           label: stage.options.label }));
     button.on('click',function() {
       Q.clearStages();
-      Q.stageScene('level1');
+      Q.stageScene('debug');
+    });
+
+    box.fit(20);
+  });
+
+  Q.scene('level1',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('playerDead',function(stage) {
+    var box = stage.insert(new Q.UI.Container({
+      x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
+    }));
+
+    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }))
+    var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+                                          label: stage.options.label }));
+    button.on('click',function() {
+      Q.clearStages();
+      Q.stageScene(currentLevel); // Start over at the same level.
     });
 
     box.fit(20);
@@ -83,7 +113,7 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
   images = [
     '/images/mashroom.png',
     '/images/background.png',
-    '/levels/01.json',
+    '/maps/debug.json',
     '/images/tiles.png',
     '/images/princess.gif',
     '/images/goomba.png',
@@ -109,6 +139,6 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
     Q.sheet('fireball', '/images/mario_fireball.gif', { tilew: 20, tileh: 20 });
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
-    Q.stageScene('level1');
+    Q.stageScene(currentLevel);
   });
 });

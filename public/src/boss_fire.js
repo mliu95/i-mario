@@ -21,7 +21,7 @@ require([], function () {
 
         if(obj.isA("Player")) {
           Q.audio.play('/sounds/mario_die.wav');
-          Q.stageScene("endGame",1, { label: "You Died" });
+          Q.stageScene("playerDead",1, { label: "You Died" });
           obj.destroy();
           this.destroy();
         }
