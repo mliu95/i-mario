@@ -139,8 +139,10 @@ Q.Enemy.extend('Narwhal', {
     });
   },
   step: function () {
-    if (this.p.vx >  0){
+    if (this.p.vx <  0){
       this.p.flip = "x";
+    } else if (this.p.vx > 0 && this.p.flip === "x"){
+      this.p.flip = "";
     }
     var player = Q('Player').items[0];
     if(player){
