@@ -4,8 +4,8 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var UiScore = document.getElementById("score");
-var UiFireBalls = document.getElementById("fireballs");
+var UiHealth = document.getElementById("health");
+var UiFireballs = document.getElementById("fireballs");
 
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
@@ -63,20 +63,19 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
     stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
-    Q.stageScene("ui", 1);
   });
 
   Q.scene('ui', function(stage){
-    // UiScore.innerHTML = "Score: " + Q.state.get("score");
-    // UiFireBalls.innerHTML = "Fireballs: " + Q.state.get("fireballs");
+    UiHealth.innerHTML = "Health: " + Q.state.get("health");
+    UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
 
-    // Q.state.on("change.coins",this, function() {
-    //     UiCoins.innerHTML = "Coins: " + Q.state.get("coins");
-    // });
+    Q.state.on("change.health", this, function() {
+      UiHealth.innerHTML = "Health: " + Q.state.get("health");
+    });
 
-    // Q.state.on("change.lives",this, function() {
-    //     UiLives.innerHTML = "Lives: " + Q.state.get("lives");
-    // });
+    Q.state.on("change.bullets", this, function() {
+      UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
+    });
   });
 
   Q.scene('PlayerDead',function(stage) {
@@ -182,6 +181,7 @@ require(objectFiles, function () {
     '/images/beer.png',
     '/sounds/fireball.wav',
     '/sounds/boss_fireball.wav',
+    '/sounds/gulp.wav',
     '/sounds/mario_die.wav',
     '/sounds/powerup.wav',
     '/sounds/world_clear.wav'
@@ -197,6 +197,8 @@ require(objectFiles, function () {
     Q.sheet('fireball', '/images/mario_fireball.gif', { tilew: 20, tileh: 20 });
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
+    Q.state.reset({ "bullets": 0, "health": 10000000 });
+    Q.stageScene("ui", 1);
     Q.stageScene(currentLevel);
   });
 });
