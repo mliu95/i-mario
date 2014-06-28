@@ -8,6 +8,8 @@ var CURRENT_LEVEL = 'debug';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 
+var player;
+
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
   run_right: { frames: [3, 1, 2], rate: 1/5 },
@@ -94,13 +96,15 @@ require(objectFiles, function () {
                                           label: stage.options.label }));
     button.on('click',function() {
       Q.clearStages();
-      Q.stageScene('debug');
+      Q.stageScene(CURRENT_LEVEL);
     });
 
     box.fit(20);
   });
 
   Q.scene('debug',function(stage) {
+    CURRENT_LEVEL = 'debug';
+
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
 
@@ -130,69 +134,85 @@ require(objectFiles, function () {
   });
 
   Q.scene('level1',function(stage) {
+
+    CURRENT_LEVEL = 'level1';
+
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level1.json', sheet: 'tiles' }));
 
     stage.on('complete',function() { Q.stageScene('level2'); });
 
+
     stage.insert(new Q.MovingBar({ x: 1650, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2725, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2900, y: 150, yDistance: 300 }));
-    var player = new Q.Alex({ x: 2250, y: 100 });
+    stage.insert(new Q.Door({ x: 3500, y: 355 }));
 
+    stage.insert(new Q.Beer({ x: 1350, y: 370 }));
+    stage.insert(new Q.Beer({ x: 2150, y: 650 }));
+    stage.insert(new Q.Beer({ x: 2250, y: 650 }));
+    stage.insert(new Q.Beer({ x: 1950, y: 360 }));
+    stage.insert(new Q.Beer({ x: 2450, y: 360 }));
+
+    stage.insert(new Q.Mashroom({ x: 2450, y: 150 }));
+
+    stage.insert(new Q.Goomba({ x: 600, y: 400 }));
+    stage.insert(new Q.Goomba({ x: 650, y: 400 }));
+    stage.insert(new Q.Goomba({ x: 1150, y: 400 }));
+
+    stage.insert(new Q.Penguin({ x: 2150, y: 450 }));
+    stage.insert(new Q.Penguin({ x: 2300, y: 450 }));
+
+    var player = new Q.Alex({ x: 50, y: 100 });
     stage.add('viewport').follow(player);
     stage.viewport.offsetX = 130;
     stage.viewport.offsetY = 200;
     stage.insert(player);
+    player.insertHealthDisplay();
+
+    stage.insert(new Q.Dragon({ x: 2300, y: 150 }));
+
+
+    stage.insert(new Q.Narwhal({ x: 2150, y: 650 }));
+    stage.insert(new Q.Narwhal({ x: 2300, y: 650 }));
+    stage.insert(new Q.Narwhal({ x: 3300, y: 450 }));
+
+
+    if(!player) {
+       player = new Q.Alex({ x: 20, y: 20 });
+    } else {
+      player.p.x = 20;
+      player.p.y = 20;
+    }
+    stage.add('viewport').follow(player);
+    // stage.viewport.offsetX = 130;
+    // stage.viewport.offsetY = 200;
+
+    stage.insert(player);
   });
 
   Q.scene('level2',function(stage) {
+    CURRENT_LEVEL = 'level2';
+
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
 
     stage.insert(new Q.MovingBar({ x: 100, y: 200 }));
     stage.insert(new Q.MovingBar({ x: 250, y: 200 }));
 
-    var player = new Q.Alex({ x: 50, y: 100 });
+    if(!player) {
+       player = new Q.Alex({ x: 20, y: 420 });
+    } else {
+      player.p.x = 20;
+      player.p.y = 420;
+    }
     stage.add('viewport').follow(player);
     stage.viewport.offsetX = 130;
     stage.viewport.offsetY = 200;
     stage.insert(player);
     player.insertHealthDisplay();
 
-    stage.on('complete',function() { Q.stageScene('level3'); });
-  });
-
-  Q.scene('level3',function(stage) {
-    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level3.json', sheet: 'tiles' }));
-
-    var player = new Q.Alex({ x: 50, y: 100 });
-
-    stage.add('viewport').follow(player);
-    stage.viewport.offsetX = 130;
-    stage.viewport.offsetY = 200;
-
-    stage.insert(player);
-    player.insertHealthDisplay();
-
-    stage.on('complete',function() { Q.stageScene('level3'); });
-  });
-
-  Q.scene('level4',function(stage) {
-    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level4.json', sheet: 'tiles' }));
-
-    var player = new Q.Alex({ x: 50, y: 100 });
-
-    stage.add('viewport').follow(player);
-    stage.viewport.offsetX = 130;
-    stage.viewport.offsetY = 200;
-
-    stage.insert(player);
-    player.insertHealthDisplay();
-
-    stage.on('complete',function() { Q.stageScene('level4'); });
+    stage.on('complete',function() { alert('You Won!!!')});
   });
 
   Q.scene('playerDead',function(stage) {
@@ -205,7 +225,7 @@ require(objectFiles, function () {
                                           label: stage.options.label }));
     button.on('click',function() {
       Q.clearStages();
-      Q.stageScene(currentLevel); // Start over at the same level.
+      Q.stageScene(CURRENT_LEVEL); // Start over at the same level.
     });
 
     box.fit(20);
