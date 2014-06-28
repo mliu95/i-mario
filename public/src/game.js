@@ -59,6 +59,8 @@ require(objectFiles, function () {
 
     stage.insert(player);
     player.insertHealthDisplay();
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
 
     stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
 
@@ -134,7 +136,8 @@ require(objectFiles, function () {
     var player = new Q.Alex({ x: 2250, y: 100 });
 
     stage.add('viewport').follow(player);
-
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
     stage.insert(player);
   });
 
@@ -147,6 +150,8 @@ require(objectFiles, function () {
 
     var player = new Q.Alex({ x: 50, y: 100 });
     stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
     stage.insert(player);
     player.insertHealthDisplay();
 
@@ -160,6 +165,8 @@ require(objectFiles, function () {
     var player = new Q.Alex({ x: 50, y: 100 });
 
     stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
 
     stage.insert(player);
     player.insertHealthDisplay();
@@ -174,6 +181,8 @@ require(objectFiles, function () {
     var player = new Q.Alex({ x: 50, y: 100 });
 
     stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
 
     stage.insert(player);
     player.insertHealthDisplay();
