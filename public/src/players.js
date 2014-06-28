@@ -1,17 +1,11 @@
 require(['./src/fireball'], function () {
-  Q.Sprite.extend('Player',{
-    init: function(p) {
-      this._super(p, {
-        sheet: 'player',
-        sprite: 'player',
-        flip: 'x',
-        canFire: false,
-        health: 100
-      });
+  Q.Sprite.extend('Player', {
+    init: function(p, hash) {
+      this._super(p, hash);
 
       this.add('2d, platformerControls, animation');
 
-      Q.input.on('fire',this,'fireWeapon');
+      Q.input.on('fire', this, 'fireWeapon');
 
       this.on('hit.sprite',function (collision) {
         if (collision.obj.isA('Princess')) {
@@ -25,6 +19,10 @@ require(['./src/fireball'], function () {
         if (collision.obj.isA('Mashroom')){
           this.p.canFire = true;
           Q.audio.play('/sounds/powerup.wav');
+        }
+
+        if (collision.obj.isA('Beer')) {
+          this.p.bullets += 10;
         }
       });
 
@@ -45,19 +43,17 @@ require(['./src/fireball'], function () {
         return;
       }
 
-      if (this.p.direction === 'left') {
-        this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y, vx: -250 }));
-        this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y + 15, vx: -250 }));
-        if(Math.random() < 0.1) {
-          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y + 100, vx: -250 }));
+      if(this.p.bullets) {
+        if (this.p.direction === 'left') {
+          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y, vx: -250 }));
+          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y + 15, vx: -250 }));
+          this.p.bullets--;
+        } else {
+          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y, vx: 250 }));
+          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y + 15, vx: 250 }));
+          this.p.bullets--;
         }
-      } else {
-        this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y, vx: 250 }));
-        this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y + 15, vx: 250 }));
-        if(Math.random() < 0.1) {
-          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y + 100, vx: 250 }));
-        }
-      }
+     }
 
       Q.audio.play('/sounds/fireball.wav');
     },
@@ -75,7 +71,14 @@ require(['./src/fireball'], function () {
   });
   Q.Player.extend('Alex',{
     init: function(p) {
-      this._super(p);
+      this._super(p, {
+        sheet: 'player',
+        sprite: 'player',
+        flip: 'x',
+        canFire: false,
+        health: 20,
+        bullets: 20
+      });
       this.className = 'Player';
     }
   });
