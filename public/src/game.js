@@ -25,11 +25,8 @@ Q.animations('goomba', {
 
 var objectFiles = [
   './src/players',
-  './src/goomba',
+  './src/enemies',
   './src/boss',
-  './src/narwhal',
-  './src/penguin',
-  './src/dragon',
   './src/mashroom',
   './src/princess',
   './src/beer'
@@ -49,20 +46,20 @@ require(objectFiles, function () {
 
     // stage.insert(new Q.Narwhal({ x: 450, y: 100}));
     // stage.insert(new Q.Narwhal({ x: 470, y: 550}));
-    // stage.insert(new Q.Narwhal({ x: 480, y: 550}));
+    //stage.insert(new Q.Narwhal({ x: 480, y: 550}));
 
 
     stage.insert(new Q.Penguin({ x: 500, y: 70 }));
 
-    // stage.insert(new Q.Dragon({ x: 500, y: 100 }));
-    // stage.insert(new Q.Goomba({ x: 550, y: 100 }));
+    stage.insert(new Q.Dragon({ x: 500, y: 100 }));
+    stage.insert(new Q.Goomba({ x: 550, y: 100 }));
     // stage.insert(new Q.Goomba({ x: 750, y: 100 }));
 
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
-    stage.insert(new Q.Mashroom({ x: 495, y: 250 }))
+    stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
   });
 
   Q.scene('PlayerDead',function(stage) {
@@ -70,7 +67,7 @@ require(objectFiles, function () {
       x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
     }));
 
-    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }))
+    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
     var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                           label: stage.options.label }));
     button.on('click',function() {
@@ -83,7 +80,51 @@ require(objectFiles, function () {
 
   Q.scene('level1',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level2',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level3',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level4',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level5',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
 
     var player = new Q.Player({ x: 50, y: 100 });
 
@@ -97,7 +138,7 @@ require(objectFiles, function () {
       x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
     }));
 
-    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }))
+    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
     var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                           label: stage.options.label }));
     button.on('click',function() {
