@@ -141,7 +141,6 @@ require(objectFiles, function () {
 
     stage.insert(new Q.Dragon({ x: 2300, y: 150 }));
 
-
     stage.insert(new Q.Narwhal({ x: 2150, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 2300, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 3300, y: 450 }));
@@ -171,8 +170,8 @@ require(objectFiles, function () {
       player.p.y = 420;
     }
     stage.add('viewport').follow(player);
-    stage.viewport.offsetX = 130;
-    stage.viewport.offsetY = 200;
+    // stage.viewport.offsetX = 130;
+    // stage.viewport.offsetY = 200;
     stage.insert(player);
     player.insertHealthDisplay();
 
