@@ -14,13 +14,18 @@ require([], function () {
     sensor: function (obj) {
       return;
     },
-    followObject: function(obj) {
+    followObject: function(obj, offset) {
       this.p.following = obj;
+      this.p.offset = offset;
     },
     step: function (){
       if (this.p.following){
         this.p.x = this.p.following.p.x;
-        this.p.y = this.p.following.p.y - 25;
+        if (this.p.offset){
+          this.p.y = this.p.following.p.y - 25 + this.p.offset;
+        } else {
+          this.p.y = this.p.following.p.y - 25;
+        }
         var percentHealth = this.p.following.p.health / this.p.following.p.originalHealth;
         if (percentHealth > 0.85){
           this.play('s0');

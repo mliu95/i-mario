@@ -31,7 +31,8 @@ Q.animations('princess', {
 });
 
 Q.animations('boss', {
-  walk: { frames: [0, 1, 4, 5], rate: 1/2 }
+  walk: { frames: [0, 1, 4, 5], rate: 1/2 },
+  dead: { frames: [0] }
 });
 
 var objectFiles = [
@@ -223,6 +224,7 @@ require(objectFiles, function () {
     '/sounds/gulp.wav',
     '/images/health.png',
     '/sounds/mario_die.wav',
+    '/sounds/nooo.wav',
     '/images/snowball.png',
     '/sounds/jump.wav',
     '/sounds/powerup.wav',

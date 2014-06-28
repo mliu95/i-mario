@@ -5,8 +5,8 @@ require(['./src/boss_fire'], function (BossFire) {
         sheet: "boss",
         sprite: 'boss',
         frameJumpCount: 0,
-        life: 500,
-        originalHealth: 500,
+        health: 600,
+        originalHealth: 600,
         scale: 0.5,
         state: "walk",
         fireCollapsedTime: 0,
@@ -15,26 +15,40 @@ require(['./src/boss_fire'], function (BossFire) {
       });
       this.add('2d, aiBounce, animation');
 
+      this.on('damage', 'onDamage');
+
       this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
-        if(collision.obj.isA("Player")) {
-          collision.obj.trigger('damage');
+        if(collision.obj.isA("Player") && this.p.state != "dead") {
+          Q.audio.play('/sounds/mario_die.wav');
+          Q.stageScene("playerDead",1, { label: "You Died" });
+          collision.obj.destroy();
+          collision.obj.p.healthDisplay.destroy();
         }
       });
+      this.className = 'Enemy';
+    },
+    sensor: function (obj) {
+      return;
+    },
+    onDamage: function (points) {
+      this.p.health -= points;
 
-      this.on('fireball_hit', function () {
-
-        this.p.life -= 10;
-
-        if (this.p.life <= 0) {
-          this.destroy();
-        }
-      })
+      if (this.p.health <= 0) {
+        this.on('sensor');
+        this.p.sensor = true;
+        this.p.angle = 90;
+        this.p.y += 100;
+        this.play("dead");
+        this.p.state = "dead";
+        this.p.healthDisplay.destroy();
+        Q.audio.play('/sounds/nooo.wav');
+      }
     },
     insertHealthDisplay: function () {
       var hd = new Q.HealthDisplay();
       this.p.healthDisplay = hd;
-      stage.insert(hd);
-      hd.followObject(this);
+      this.stage.insert(hd);
+      hd.followObject(this, -40);
     },
     switchStates: function () {
       this.p.vx = 0;
@@ -48,10 +62,12 @@ require(['./src/boss_fire'], function (BossFire) {
       }
       var player = Q('Player').items[0];
       if(player){
-        if (this.p.x - player.p.x > 0){
-          this.p.flip = "x";
-        } else {
-          this.p.flip = "";
+        if(this.p.state != "dead"){
+          if (this.p.x - player.p.x > 0){
+            this.p.flip = "x";
+          } else {
+            this.p.flip = "";
+          }
         }
         if (this.p.state === "walk"){
           var currentFrame;
@@ -65,7 +81,7 @@ require(['./src/boss_fire'], function (BossFire) {
           if (currentFrame > 350) {
             this.p.jumpCount++;
             this.p.frameJumpCount = 0;
-            if (this.p.jumpCount > 1){
+            if (this.p.jumpCount > 0){
               this.switchStates();
               this.p.state = "dashWait";
             }
@@ -74,9 +90,9 @@ require(['./src/boss_fire'], function (BossFire) {
           if (this.p.fireCollapsedTime >= 200) {
             this.p.fireCollapsedTime = 0;
             if((player.p.x - this.p.x)/(Math.abs(player.p.x - this.p.x)) < 0){
-              this.stage.insert(new Q.BossFire({ x: this.p.x - 30, y: this.p.y, vx: -250, vy: 0, flip: "x" }));
+              this.stage.insert(new Q.BossFire({ x: this.p.x - 30, y: this.p.y + 10, vx: -250, vy: 0, flip: "x" }));
             } else {
-              this.stage.insert(new Q.BossFire({ x: this.p.x + 30, y: this.p.y, vx: 250, vy: 0 }));
+              this.stage.insert(new Q.BossFire({ x: this.p.x + 30, y: this.p.y + 10, vx: 250, vy: 0 }));
             }
             Q.audio.play('/sounds/boss_fireball.wav');
           }
@@ -94,7 +110,7 @@ require(['./src/boss_fire'], function (BossFire) {
           } else {
             if(player){
               //Find direction of player relative to this narwhal
-              this.p.vx += ((player.p.x - this.p.x)/(Math.abs(player.p.x - this.p.x))) * 20;
+              this.p.vx += ((player.p.x - this.p.x)/(Math.abs(player.p.x - this.p.x))) * 40;
               if(this.p.vx > 500){
                 this.p.vx = 500;
               } else if(this.p.vx < -500){
@@ -104,7 +120,9 @@ require(['./src/boss_fire'], function (BossFire) {
           }
         }
       }
-      this.play('walk');
+      if (!this.p.state === "dead"){
+        this.play('walk');
+      }
     }
   });
 });

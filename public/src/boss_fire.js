@@ -14,7 +14,7 @@ require([], function () {
       this.add("2d, animation");
       this.on("sensor");
       this.on('hit',function(collision) {
-        if (!collision.obj.isA('Enemy') && !collision.obj.isA('Boss') && !collision.obj.isA('Player')){
+        if (!collision.obj.isA('Enemy') && !collision.obj.isA('Boss') && !collision.obj.isA('Player') && !collision.obj.isA('Fireball')){
           this.destroy();
         }
       });
