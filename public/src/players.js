@@ -45,8 +45,16 @@ require(['./src/fireball'], function () {
 
       if (this.p.direction === 'left') {
         this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y, vx: -250 }));
+        this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y + 15, vx: -250 }));
+        if(Math.random() < 0.1) {
+          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y + 100, vx: -250 }));
+        }
       } else {
         this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y, vx: 250 }));
+        this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y + 15, vx: 250 }));
+        if(Math.random() < 0.1) {
+          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y + 100, vx: 250 }));
+        }
       }
 
       Q.audio.play('/sounds/fireball.wav');
