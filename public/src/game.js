@@ -182,6 +182,7 @@ require(objectFiles, function () {
     '/sounds/fireball.wav',
     '/sounds/boss_fireball.wav',
     '/sounds/gulp.wav',
+    '/sounds/jump.wav',
     '/sounds/mario_die.wav',
     '/sounds/powerup.wav',
     '/sounds/world_clear.wav'
