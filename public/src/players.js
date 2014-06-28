@@ -98,6 +98,7 @@ require(['./src/fireball'], function () {
         health: 100,
         jumpInput: false,
         originalHealth: 500,
+        scale: 0.07,
         bullets: 0,
         power: 10
       });

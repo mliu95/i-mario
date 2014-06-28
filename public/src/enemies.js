@@ -38,11 +38,12 @@ Q.Sprite.extend('Enemy',{
       if(collision.obj.isA('Player')) {
         this.destroy();
         collision.obj.p.vy = -300;
+        Q.audio.play("/sounds/stomp.wav");
       }
     });
   },
   step: function () {
-    this.play('walk');
+
   }
 });
 
@@ -50,12 +51,17 @@ Q.Enemy.extend('Goomba', {
   init: function(p){
     this._super(p, {
       sheet: 'goomba',
-      sprite: 'goomba',
       vx: 100,
       originalHealth: 50,
       health: 50,
-      scale: 0.15
+      scale: 0.07
     });
+    this.className = 'Enemy';
+  },
+  step: function () {
+    if (this.p.vx > 0){
+      this.p.flip = "x";
+    }
   }
 });
 
@@ -63,22 +69,21 @@ require(['./src/dragon_fire'], function () {
   Q.Enemy.extend('Dragon', {
     init: function(p) {
       this._super(p, {
-        sheet: 'goomba',
-        sprite: 'goomba',
+        sheet: 'dragon',
         vx: 100,
         health: 50,
         originalHealth: 50,
-        scale: 0.15,
-        fireStep: 0
+        scale: 0.07,
+        fireStep: 75
       });
       this.className = 'Enemy';
     },
     step: function () {
-      this.play('walk');
       if(this.p.fireStep === 75){
         if(this.p.vx < 0) {
           this.stage.insert(new Q.DragonFire({ x: this.p.x - 15, y: this.p.y, vx: -250 }));
         } else {
+          this.p.flip = "x";
           this.stage.insert(new Q.DragonFire({ x: this.p.x + 15, y: this.p.y, vx: 250 }));
         }
         this.p.fireStep = 0;
@@ -109,12 +114,11 @@ require(['./src/dragon_fire'], function () {
 Q.Enemy.extend('Narwhal', {
   init: function(p){
     this._super(p, {
-      sheet: 'goomba',
-      sprite: 'goomba',
+      sheet: 'narwhal',
       vx: 100,
       health: 30,
       originalHealth: 30,
-      scale: 0.15
+      scale: 0.05
     });
     this.className = 'Enemy';
   },
@@ -135,7 +139,9 @@ Q.Enemy.extend('Narwhal', {
     });
   },
   step: function () {
-    this.play('walk');
+    if (this.p.vx >  0){
+      this.p.flip = "x";
+    }
     var player = Q('Player').items[0];
     if(player){
       if(Math.abs(player.p.y - this.p.y) < 40)  {
