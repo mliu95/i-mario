@@ -31,6 +31,7 @@ var objectFiles = [
   './src/players',
   './src/enemies',
   './src/boss',
+  './src/shoe',
   './src/mashroom',
   './src/princess',
   './src/beer',
@@ -113,6 +114,7 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
     stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
+    stage.insert(new Q.Princess({ x: 200, y: 50 }));
     Q.stageScene('ui', 1);
   });
 

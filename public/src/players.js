@@ -8,14 +8,6 @@ require(['./src/fireball'], function () {
       Q.input.on('fire', this, 'fireWeapon');
 
       this.on('hit.sprite',function (collision) {
-        if (collision.obj.isA('Princess')) {
-          var princess = collision.obj;
-          this.stage.insert(new Q.Fireball({ x: princess.p.x - 15, y: princess.p.y, vx: -250 }));
-          Q.stageScene('playerDead', 1, { label: "You died!" });
-          this.destroy();
-          Q.audio.play('/sounds/mario_die.wav');
-        }
-
         if (collision.obj.isA('Mashroom')){
           this.p.bullets += 20;
           Q.state.set("bullets", this.p.bullets);
