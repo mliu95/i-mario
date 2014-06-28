@@ -28,6 +28,7 @@ var objectFiles = [
   './src/goomba',
   './src/boss',
   './src/narwhal',
+  './src/penguin',
   './src/dragon',
   './src/mashroom',
   './src/princess',
@@ -51,9 +52,9 @@ require(objectFiles, function () {
     // stage.insert(new Q.Narwhal({ x: 480, y: 550}));
 
 
-    // stage.insert(new Q.Boss({ x: 250, y: 70 }));
+    stage.insert(new Q.Penguin({ x: 500, y: 70 }));
 
-    stage.insert(new Q.Dragon({ x: 500, y: 100 }));
+    // stage.insert(new Q.Dragon({ x: 500, y: 100 }));
     // stage.insert(new Q.Goomba({ x: 550, y: 100 }));
     // stage.insert(new Q.Goomba({ x: 750, y: 100 }));
 
