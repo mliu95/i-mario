@@ -4,7 +4,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var CURRENT_LEVEL = 'level1';
+var CURRENT_LEVEL = 'level2';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 var playButtles, playerHealth;
@@ -168,14 +168,16 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
 
-    var player = new Q.Alex({ x: 20, y: 20, bullets: playButtles, health: playerHealth });
+    stage.insert(new Q.Princess({ x: 1700, y: 360 }));
+
+    var player = new Q.Alex({ x: 1620, y: 20, bullets: playButtles, health: playerHealth });
     stage.insert(player);
     player.insertHealthDisplay();
     stage.add('viewport').follow(player);
     stage.viewport.offsetX = 130;
     stage.viewport.offsetY = 200;
 
-    stage.on('complete', function() { alert('You Won!!!')});
+    stage.on('complete', function() { debugger; alert('You Won!!!')});
   });
 
   Q.scene('playerDead',function(stage) {
