@@ -14,13 +14,11 @@ require(['./src/fireball'], function () {
             this.p.health = 500;
           }
           Q.state.set("health", this.p.health);
-          this.p.bullets += 20;
-          Q.state.set("bullets", this.p.bullets);
           Q.audio.play('/sounds/powerup.wav');
         }
 
         if (collision.obj.isA('Beer')) {
-          this.p.bullets += 10;
+          this.p.bullets += 20;
           Q.state.set("bullets", this.p.bullets);
           Q.audio.play('/sounds/gulp.wav');
         }
