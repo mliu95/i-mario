@@ -45,12 +45,12 @@ require(['./src/fireball'], function () {
 
       if(this.p.bullets) {
         if (this.p.direction === 'left') {
-          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y, vx: -250 }));
-          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y + 15, vx: -250 }));
+          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y, vx: -250 , power: this.p.power}));
+          this.stage.insert(new Q.Fireball({ x: this.p.x - 15, y: this.p.y + 15, vx: -250, power: this.p.power }));
           this.p.bullets--;
         } else {
-          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y, vx: 250 }));
-          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y + 15, vx: 250 }));
+          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y, vx: 250 , power: this.p.power}));
+          this.stage.insert(new Q.Fireball({ x: this.p.x + 15, y: this.p.y + 15, vx: 250, power: this.p.power }));
           this.p.bullets--;
         }
      }
@@ -77,7 +77,8 @@ require(['./src/fireball'], function () {
         flip: 'x',
         canFire: false,
         health: 20,
-        bullets: 20
+        bullets: 20,
+        power: 10
       });
       this.className = 'Player';
     }

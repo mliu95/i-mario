@@ -2,6 +2,17 @@ Q.Sprite.extend('Enemy',{
   init: function(p, hash) {
     this._super(p, hash);
     this.addEventListeners();
+    this.on('damage', 'onDamage');
+  },
+  onDamage: function (points) {
+    this.p.health -= points;
+
+    if (this.p.health <= 0) {
+      this.destroy();
+    }
+    // TODO: Stage an enemy death scene
+    //Q.audio.play('/sounds/mario_die.wav');
+    //Q.stageScene("playerDead",1, { label: "You Died" });
   },
   addEventListeners: function() {
     this.add('2d, aiBounce, animation');
@@ -42,9 +53,11 @@ require(['./src/dragon_fire'], function () {
         sheet: 'goomba',
         sprite: 'goomba',
         vx: 100,
+        health: 100,
         scale: 0.15,
         fireStep: 0
       });
+      this.className = 'Enemy';
     },
     step: function () {
       this.play('walk');
@@ -85,8 +98,10 @@ Q.Enemy.extend('Narwhal', {
       sheet: 'goomba',
       sprite: 'goomba',
       vx: 100,
+      health: 30,
       scale: 0.15
     });
+    this.className = 'Enemy';
   },
   addEventListeners: function () {
     this.add('2d, aiBounce, animation');
@@ -128,8 +143,10 @@ require(['./src/snowball'], function () {
         sheet: 'goomba',
         sprite: 'goomba',
         scale: 0.15,
-        snowballStep: 0
+        snowballStep: 0,
+        health: 30 
       });
+      this.className = 'Enemy';
     },
     addEventListeners: function () {
       this.add('2d, aiBounce, animation');

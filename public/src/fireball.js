@@ -14,15 +14,21 @@ require([], function () {
         if(collision.obj.isA('TileLayer')) {
           this.p.vy = -300;
         }
+        if (collision.obj.isA('Enemy')) {
+          collision.obj.trigger('damage', this.p.power);
+          this.destroy();
+        }
       });
 
-      this.on("bump.left,bump.right", function (collision) {
+
+      this.on("bump.left, bump.top, bump.right", function (collision) {
         if (collision.obj.isA('Player')) {
           return;
         }
 
         if (collision.obj.isA('Enemy')) {
-          collision.obj.trigger('damage');
+          collision.obj.trigger('damage', this.p.power);
+          this.destroy();
         }
       });
     },
