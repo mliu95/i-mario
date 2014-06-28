@@ -59,7 +59,7 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
-    stage.insert(new Q.Mashroom({ x: 495, y: 250 }))
+    stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
   });
 
   Q.scene('PlayerDead',function(stage) {
@@ -67,7 +67,7 @@ require(objectFiles, function () {
       x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
     }));
 
-    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }))
+    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
     var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                           label: stage.options.label }));
     button.on('click',function() {
@@ -80,7 +80,51 @@ require(objectFiles, function () {
 
   Q.scene('level1',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level2',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level3',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level4',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+
+    var player = new Q.Player({ x: 50, y: 100 });
+
+    stage.add("viewport").follow(player);
+
+    stage.insert(player);
+  });
+
+  Q.scene('level5',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
 
     var player = new Q.Player({ x: 50, y: 100 });
 
@@ -94,7 +138,7 @@ require(objectFiles, function () {
       x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
     }));
 
-    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }))
+    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
     var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                           label: stage.options.label }));
     button.on('click',function() {
