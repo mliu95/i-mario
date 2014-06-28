@@ -172,14 +172,14 @@ require(objectFiles, function () {
     stage.insert(new Q.Princess({ x: 1700, y: 360 }));
     stage.insert(new Q.Boss({ x: 1000, y: 360 }));
 
-    stage.insert(new Q.Mashroom({x: 290, y:350 }));
+    // stage.insert(new Q.Mashroom({x: 290, y:350 }));
     stage.insert(new Q.Mashroom({x: 300, y:350 }));
-    stage.insert(new Q.Beer({ x: 300, y: 380 }));
-    stage.insert(new Q.Beer({ x: 330, y: 380 }));
-    stage.insert(new Q.Beer({ x: 360, y: 380 }));
-    stage.insert(new Q.Beer({ x: 300, y: 380 }));
-    stage.insert(new Q.Beer({ x: 330, y: 380 }));
-    stage.insert(new Q.Beer({ x: 360, y: 380 }));
+    // stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    // stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    // stage.insert(new Q.Beer({ x: 360, y: 380 }));
+    // stage.insert(new Q.Beer({ x: 300, y: 380 }));
+    // stage.insert(new Q.Beer({ x: 330, y: 380 }));
+    // stage.insert(new Q.Beer({ x: 360, y: 380 }));
     stage.insert(new Q.Beer({ x: 300, y: 380 }));
     stage.insert(new Q.Beer({ x: 330, y: 380 }));
     stage.insert(new Q.Beer({ x: 360, y: 380 }));
