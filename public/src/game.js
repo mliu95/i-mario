@@ -4,6 +4,9 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
+var UiScore = document.getElementById("score");
+var UiFireBalls = document.getElementById("fireballs");
+
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
   run_right: { frames: [3, 1, 2], rate: 1/5 },
@@ -38,7 +41,7 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
 
-    var player = new Q.Alex({ x: 50, y: 100 });
+    var player = new Q.Alex({ x: 50, y: 220 });
 
     stage.add("viewport").follow(player);
 
@@ -49,10 +52,10 @@ require(objectFiles, function () {
     //stage.insert(new Q.Narwhal({ x: 480, y: 550}));
 
 
-    stage.insert(new Q.Penguin({ x: 500, y: 70 }));
+    // stage.insert(new Q.Penguin({ x: 500, y: 70 }));
 
-    stage.insert(new Q.Dragon({ x: 500, y: 100 }));
-    stage.insert(new Q.Goomba({ x: 550, y: 100 }));
+    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
+    // stage.insert(new Q.Goomba({ x: 550, y: 100 }));
     // stage.insert(new Q.Goomba({ x: 750, y: 100 }));
 
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
@@ -60,6 +63,20 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
     stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
+    Q.stageScene("ui", 1);
+  });
+
+  Q.scene('ui', function(stage){
+    // UiScore.innerHTML = "Score: " + Q.state.get("score");
+    // UiFireBalls.innerHTML = "Fireballs: " + Q.state.get("fireballs");
+
+    // Q.state.on("change.coins",this, function() {
+    //     UiCoins.innerHTML = "Coins: " + Q.state.get("coins");
+    // });
+
+    // Q.state.on("change.lives",this, function() {
+    //     UiLives.innerHTML = "Lives: " + Q.state.get("lives");
+    // });
   });
 
   Q.scene('PlayerDead',function(stage) {

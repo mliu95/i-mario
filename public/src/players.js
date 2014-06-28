@@ -28,9 +28,9 @@ require(['./src/fireball'], function () {
         }
       });
 
-      this.on('damage', 'onDemage');
+      this.on('damage', 'onDamage');
     },
-    onDemage: function () {
+    onDamage: function () {
       this.p.health -= 100;
 
       if (this.p.health > 0) {

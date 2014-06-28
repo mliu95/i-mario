@@ -1,0 +1,26 @@
+.score{
+  z-index:1;
+  position:absolute;
+  padding-top:10px;
+  padding-right:10px;
+  right:0;
+  text-align:right;
+  color:white;
+}
+
+.fireballs{
+  z-index:1;
+  position:absolute;
+  padding-top:30px;
+  padding-right:10px;
+  right:0;
+  text-align:right;
+  color:white;
+  background-image:;
+}
+
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+}
