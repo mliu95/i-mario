@@ -125,7 +125,7 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 330, y: 80 }));
     stage.insert(new Q.Beer({ x: 360, y: 80 }));
 
-    stage.insert(new Q.Narwhal({ x: 700, y: 50 }));
+    stage.insert(new Q.Boss({ x: 700, y: 50 }));
     Q.stageScene('ui', 1);
   });
 
