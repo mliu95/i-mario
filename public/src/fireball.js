@@ -34,6 +34,7 @@ require([], function () {
     },
     step: function (dt) {
       this.p.dist += 1;
+      this.p.angle += 20;
 
       if (this.p.dist === 100) {
         this.destroy();

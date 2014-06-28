@@ -34,10 +34,6 @@ Q.animations('boss', {
   walk: { frames: [1, 2, 3, 4, 5], rate: 1/2 }
 });
 
-Q.animations('goomba', {
-  walk: { frames: [0, 1], rate: 1/2 }
-});
-
 var objectFiles = [
   './src/players',
   './src/enemies',
@@ -109,17 +105,19 @@ require(objectFiles, function () {
     var player = new Q.Alex({ x: 50, y: 220 });
 
     stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
 
     stage.insert(player);
     player.insertHealthDisplay();
 
-    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
-
+    stage.insert(new Q.Dragon({ x: 500, y: 100 }));
+    stage.insert(new Q.Mashroom({x: 300, y:250 }));
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
-    stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
+    stage.insert(new Q.Goomba({ x: 495, y: 250 }));
     stage.insert(new Q.Princess({ x: 200, y: 50 }));
     Q.stageScene('ui', 1);
   });
@@ -133,8 +131,8 @@ require(objectFiles, function () {
     stage.insert(new Q.MovingBar({ x: 1650, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2725, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2900, y: 150, yDistance: 300 }));
-
     var player = new Q.Alex({ x: 2250, y: 100 });
+
     stage.add('viewport').follow(player);
 
     stage.insert(player);
@@ -211,6 +209,9 @@ require(objectFiles, function () {
     '/maps/level4.json',
     '/images/tiles.png',
     '/images/princess.gif',
+    '/images/fluffy.png',
+    '/images/monster.png',
+    '/images/narwhal.png',
     '/images/goomba.png',
     '/images/boss.png',
     '/images/mario1.png',
@@ -220,10 +221,12 @@ require(objectFiles, function () {
     '/images/bar.png',
     '/images/door.png',
     '/sounds/fireball.wav',
+    '/sounds/stomp.wav',
     '/sounds/boss_fireball.wav',
     '/sounds/gulp.wav',
     '/images/health.png',
     '/sounds/mario_die.wav',
+    '/images/snowball.png',
     '/sounds/jump.wav',
     '/sounds/powerup.wav',
     '/sounds/world_clear.wav'
@@ -232,12 +235,15 @@ require(objectFiles, function () {
   Q.load(images.join(',') , function() {
     Q.sheet('tiles','/images/tiles.png', { tilew: 32, tileh: 32 });
     Q.sheet('tiles','/images/tiles.png', { tilew: 32, tileh: 32 });
-    Q.sheet('player', '/images/mario1.png', { tilew: 25, tileh: 32 });
+    Q.sheet('player', '/images/mario1.png', { tilew: 400, tileh: 538 });
     Q.sheet('princess', '/images/princess.gif', { tilew: 24, tileh: 44 });
     Q.sheet('boss', '/images/boss.png', { tilew: 51 , tileh: 46 });
-    Q.sheet('goomba', '/images/goomba.png', { tilew: 206, tileh: 206 });
+    Q.sheet('goomba', '/images/monster.png', { tilew: 500, tileh: 437 });
+    Q.sheet('dragon', '/images/fluffy.png', { tilew: 500, tileh: 392 });
+    Q.sheet('narwhal', '/images/narwhal.png', { tilew: 800, tileh: 434 });
     Q.sheet('mashroom', '/images/mashroom.png', { tilew: 483, tileh: 480 });
     Q.sheet('fireball', '/images/mario_fireball.gif', { tilew: 20, tileh: 20 });
+    Q.sheet('snowball', '/images/snowball.png', { tilew: 140, tileh: 129 });
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
     Q.sheet('door', '/images/door.png', { tilew: 188, tileh: 225 });

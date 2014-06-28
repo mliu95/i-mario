@@ -17,24 +17,18 @@ Q.Sprite.extend("DragonFire",{
     this.on("sensor");
 
     this.on('hit',function(collision) {
-      if (!collision.obj.isA('Dragon')){
+      if (!collision.obj.isA('Enemy') && !collision.obj.isA('Boss') && !collision.obj.isA('Player')){
         this.destroy();
       }
     });
   },
   sensor: function (obj) {
-      if (obj.isA('Boss')) {
+      if (obj.isA('Boss') || obj.isA('Enemy')) {
         return;
       }
 
       if(obj.isA("Player")) {
-        Q.audio.play('/sounds/mario_die.wav');
-        Q.stageScene("endGame",1, { label: "You Died" });
-        obj.destroy();
-        this.destroy();
-      }
-
-      if (obj.isA("Enemy")) {
+        obj.trigger('damage');
         this.destroy();
       }
   },
