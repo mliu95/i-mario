@@ -36,7 +36,7 @@ var objectFiles = [
 require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
   Q.scene('level1',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/levels/01.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
 
     var player = new Q.Player({ x: 50, y: 100 });
 
@@ -82,7 +82,7 @@ require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
   images = [
     '/images/mashroom.png',
     '/images/background.png',
-    '/levels/01.json',
+    '/maps/01.json',
     '/images/tiles.png',
     '/images/princess.gif',
     '/images/goomba.png',
