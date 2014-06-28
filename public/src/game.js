@@ -4,6 +4,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
+var CURRENT_LEVEL = 'level1';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 
@@ -32,7 +33,8 @@ var objectFiles = [
   './src/boss',
   './src/mashroom',
   './src/princess',
-  './src/beer'
+  './src/beer',
+  './src/door'
 ];
 
 require(objectFiles, function () {
@@ -94,59 +96,77 @@ require(objectFiles, function () {
     box.fit(20);
   });
 
+  Q.scene('debug',function(stage) {
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
+
+    var player = new Q.Alex({ x: 50, y: 220 });
+
+    stage.add('viewport').follow(player);
+
+    stage.insert(player);
+
+    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
+
+    stage.insert(new Q.Beer({ x: 300, y: 505 }));
+    stage.insert(new Q.Beer({ x: 330, y: 505 }));
+    stage.insert(new Q.Beer({ x: 360, y: 505 }));
+
+    stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
+    Q.stageScene('ui', 1);
+  });
+
   Q.scene('level1',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level1.json', sheet: 'tiles' }));
 
-    var player = new Q.Player({ x: 50, y: 100 });
+    stage.on('complete',function() { Q.stageScene('level2'); });
 
-    stage.add("viewport").follow(player);
+    stage.insert(new Q.Door({ x: 1520, y: 100 }));
+
+    var player = new Q.Alex({ x: 50, y: 100 });
+    stage.add('viewport').follow(player);
 
     stage.insert(player);
   });
 
   Q.scene('level2',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
 
-    var player = new Q.Player({ x: 50, y: 100 });
+    var player = new Q.Alex({ x: 50, y: 100 });
 
-    stage.add("viewport").follow(player);
+    stage.add('viewport').follow(player);
 
     stage.insert(player);
+
+    stage.on('complete',function() { Q.stageScene('level3'); });
   });
 
   Q.scene('level3',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level3.json', sheet: 'tiles' }));
 
-    var player = new Q.Player({ x: 50, y: 100 });
+    var player = new Q.Alex({ x: 50, y: 100 });
 
-    stage.add("viewport").follow(player);
+    stage.add('viewport').follow(player);
 
     stage.insert(player);
+
+    stage.on('complete',function() { Q.stageScene('level3'); });
   });
 
   Q.scene('level4',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level4.json', sheet: 'tiles' }));
 
-    var player = new Q.Player({ x: 50, y: 100 });
+    var player = new Q.Alex({ x: 50, y: 100 });
 
-    stage.add("viewport").follow(player);
-
-    stage.insert(player);
-  });
-
-  Q.scene('level5',function(stage) {
-    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/01.json', sheet: 'tiles' }));
-
-    var player = new Q.Player({ x: 50, y: 100 });
-
-    stage.add("viewport").follow(player);
+    stage.add('viewport').follow(player);
 
     stage.insert(player);
+
+    stage.on('complete',function() { Q.stageScene('level4'); });
   });
 
   Q.scene('playerDead',function(stage) {
@@ -171,6 +191,10 @@ require(objectFiles, function () {
     '/images/mashroom.png',
     '/images/background.png',
     '/maps/debug.json',
+    '/maps/level1.json',
+    '/maps/level2.json',
+    '/maps/level3.json',
+    '/maps/level4.json',
     '/images/tiles.png',
     '/images/princess.gif',
     '/images/goomba.png',
@@ -179,6 +203,7 @@ require(objectFiles, function () {
     '/images/mario_fireball.gif',
     '/images/boss_fireball.gif',
     '/images/beer.png',
+    '/images/door.png',
     '/sounds/fireball.wav',
     '/sounds/boss_fireball.wav',
     '/sounds/gulp.wav',
@@ -190,6 +215,7 @@ require(objectFiles, function () {
 
   Q.load(images.join(',') , function() {
     Q.sheet('tiles','/images/tiles.png', { tilew: 32, tileh: 32 });
+    Q.sheet('tiles','/images/tiles.png', { tilew: 32, tileh: 32 });
     Q.sheet('player', '/images/mario1.png', { tilew: 25, tileh: 32 });
     Q.sheet('princess', '/images/princess.gif', { tilew: 24, tileh: 44 });
     Q.sheet('boss', '/images/boss.png', { tilew: 51 , tileh: 46 });
@@ -198,8 +224,10 @@ require(objectFiles, function () {
     Q.sheet('fireball', '/images/mario_fireball.gif', { tilew: 20, tileh: 20 });
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
+    Q.sheet('door', '/images/door.png', { tilew: 188, tileh: 225 });
+    Q.stageScene('level1');
     Q.state.reset({ "bullets": 0, "health": 10000000 });
     Q.stageScene("ui", 1);
-    Q.stageScene(currentLevel);
+    Q.stageScene(CURRENT_LEVEL);
   });
 });
