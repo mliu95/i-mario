@@ -35,7 +35,8 @@ var objectFiles = [
 ];
 
 require(objectFiles, function () {
-  Q.scene('debug',function(stage) {
+  var currentLevel = 'debug';
+  Q.scene(currentLevel,function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
 
