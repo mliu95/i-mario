@@ -4,9 +4,13 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var CURRENT_LEVEL = 'debug';
+var CURRENT_LEVEL = 'level2';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
+var playButtles, playerHealth;
+
+playButtles = 0;
+playerHealth = 100;
 
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
@@ -117,9 +121,6 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level1.json', sheet: 'tiles' }));
 
-    stage.on('complete',function() { Q.stageScene('level2'); });
-
-
     stage.insert(new Q.MovingBar({ x: 1650, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2725, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2900, y: 150, yDistance: 300 }));
@@ -146,13 +147,20 @@ require(objectFiles, function () {
     stage.insert(new Q.Narwhal({ x: 2300, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 3300, y: 450 }));
 
-    var player = new Q.Alex({ x: 20, y: 20 });
+    var player = new Q.Alex({ x: 20, y: 20, bullets: playButtles, health: playerHealth });
     stage.insert(player);
     player.insertHealthDisplay();
 
     stage.add('viewport').follow(player);
     stage.viewport.offsetX = 130;
     stage.viewport.offsetY = 200;
+
+    stage.on('complete',function() {
+      playerHealth = player.p.health;
+      playButtles = player.p.bullets;
+      Q.stageScene('level2');
+    });
+
   });
 
   Q.scene('level2',function(stage) {
@@ -161,22 +169,16 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
 
-    stage.insert(new Q.MovingBar({ x: 100, y: 200 }));
-    stage.insert(new Q.MovingBar({ x: 250, y: 200 }));
+    stage.insert(new Q.Princess({ x: 1700, y: 360 }));
 
-    if(!player) {
-       player = new Q.Alex({ x: 20, y: 420 });
-    } else {
-      player.p.x = 20;
-      player.p.y = 420;
-    }
-    stage.add('viewport').follow(player);
-    // stage.viewport.offsetX = 130;
-    // stage.viewport.offsetY = 200;
+    var player = new Q.Alex({ x: 1620, y: 20, bullets: playButtles, health: playerHealth });
     stage.insert(player);
     player.insertHealthDisplay();
+    stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
 
-    stage.on('complete',function() { alert('You Won!!!')});
+    stage.on('complete', function() { debugger; alert('You Won!!!')});
   });
 
   Q.scene('playerDead',function(stage) {
