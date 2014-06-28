@@ -152,7 +152,7 @@ Q.Enemy.extend('Narwhal', {
 });
 
 require(['./src/snowball'], function () {
-  Q.Sprite.extend('Penguin',{
+  Q.Enemy.extend('Penguin',{
     init: function(p) {
       this._super(p, {
         sheet: 'goomba',

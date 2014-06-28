@@ -2,9 +2,9 @@ require([], function () {
   Q.Sprite.extend("Snowball",{
     init: function(p) {
       this._super(p, {
-        sheet: "fireball",
+        sheet: "snowball",
         dist: 0,
-        scale: 0.5,
+        scale: 0.1,
         sensor: true
       });
 
@@ -18,15 +18,14 @@ require([], function () {
 
       this.on("bump.left,bump.right", function (collision) {
         if(collision.obj.isA("Player")) {
-          Q.audio.play('/sounds/mario_die.wav');
-          Q.stageScene("playerDead",1, { label: "You Died" });
-          collision.obj.destroy();
+          collision.obj.trigger('damage');
           this.destroy();
         }
       });
     },
     step: function (dt) {
       this.p.dist += 1;
+      this.p.angle += 20;
 
       if (this.p.dist === 100) {
         this.destroy();

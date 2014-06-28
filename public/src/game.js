@@ -113,13 +113,13 @@ require(objectFiles, function () {
     stage.insert(player);
     player.insertHealthDisplay();
 
-    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
+    stage.insert(new Q.Penguin({ x: 500, y: 100 }));
 
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
 
-    stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
+    stage.insert(new Q.Penguin({ x: 495, y: 250 }));
     stage.insert(new Q.Princess({ x: 200, y: 50 }));
     Q.stageScene('ui', 1);
   });
@@ -132,7 +132,7 @@ require(objectFiles, function () {
 
     stage.insert(new Q.Door({ x: 1520, y: 100 }));
 
-    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
+    stage.insert(new Q.Penguin({ x: 500, y: 100 }));
 
     var player = new Q.Alex({ x: 50, y: 100 });
     stage.add('viewport').follow(player);
@@ -224,6 +224,7 @@ require(objectFiles, function () {
     '/sounds/gulp.wav',
     '/images/health.png',
     '/sounds/mario_die.wav',
+    '/images/snowball.png',
     '/sounds/jump.wav',
     '/sounds/powerup.wav',
     '/sounds/world_clear.wav'
@@ -238,6 +239,7 @@ require(objectFiles, function () {
     Q.sheet('goomba', '/images/goomba.png', { tilew: 206, tileh: 206 });
     Q.sheet('mashroom', '/images/mashroom.png', { tilew: 483, tileh: 480 });
     Q.sheet('fireball', '/images/mario_fireball.gif', { tilew: 20, tileh: 20 });
+    Q.sheet('snowball', '/images/snowball.png', { tilew: 140, tileh: 129 });
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
     Q.sheet('door', '/images/door.png', { tilew: 188, tileh: 225 });
