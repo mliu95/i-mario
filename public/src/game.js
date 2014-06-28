@@ -24,7 +24,7 @@ Q.animations('goomba', {
 });
 
 var objectFiles = [
-  './src/player',
+  './src/players',
   './src/goomba',
   './src/boss',
   './src/narwhal',
@@ -33,12 +33,12 @@ var objectFiles = [
   './src/beer'
 ];
 
-require(objectFiles, function (Player, Boss, Mashroom, Princess, Beer) {
+require(objectFiles, function () {
   Q.scene('debug',function(stage) {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
 
-    var player = new Q.Player({ x: 50, y: 100 });
+    var player = new Q.Alex({ x: 50, y: 100 });
 
     stage.add("viewport").follow(player);
 

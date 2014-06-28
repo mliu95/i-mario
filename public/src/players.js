@@ -1,4 +1,4 @@
-require(['./src/fireball'], function (Fireball) {
+require(['./src/fireball'], function () {
   Q.Sprite.extend('Player',{
     init: function(p) {
       this._super(p, {
@@ -61,6 +61,12 @@ require(['./src/fireball'], function (Fireball) {
       } else {
         this.play('stand_' + this.p.direction);
       }
+    }
+  });
+  Q.Player.extend('Alex',{
+    init: function(p) {
+      this._super(p);
+      this.className = 'Player';
     }
   });
 });
