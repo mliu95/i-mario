@@ -15,7 +15,7 @@ require(['./src/fireball'], function () {
 
       this.on('hit.sprite',function (collision) {
         if (collision.obj.isA('Princess')) {
-          Q.stageScene('endGame', 1, { label: 'You Won!' });
+          Q.stageScene('playerDead', 1, { label: 'You Won!' });
           this.destroy();
           Q.audio.play('/sounds/world_clear.wav');
         }
@@ -35,7 +35,7 @@ require(['./src/fireball'], function () {
         return;
       }
       Q.audio.play('/sounds/mario_die.wav');
-      Q.stageScene("endGame",1, { label: "You Died" });
+      Q.stageScene("playerDead",1, { label: "You Died" });
       this.destroy();
     },
     fireWeapon: function () {

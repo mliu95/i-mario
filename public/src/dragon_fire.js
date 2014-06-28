@@ -1,5 +1,5 @@
 require([], function () {
-  Q.Sprite.extend("BossFire",{
+  Q.Sprite.extend("DragonFire",{
     init: function(p) {
       this._super(p, {
         sheet: "bossfire",
@@ -11,8 +11,17 @@ require([], function () {
         sensor: true
       });
 
+      if (this.p.vx < 0){
+        this.p.flip = "x";
+      }
       this.add("2d, animation");
       this.on("sensor");
+
+      this.on('hit',function(collision) {
+        if (!collision.obj.isA('Dragon')){
+          this.destroy();
+        }
+      });
     },
     sensor: function (obj) {
         if (obj.isA('Boss')) {
@@ -21,7 +30,7 @@ require([], function () {
 
         if(obj.isA("Player")) {
           Q.audio.play('/sounds/mario_die.wav');
-          Q.stageScene("playerDead",1, { label: "You Died" });
+          Q.stageScene("endGame",1, { label: "You Died" });
           obj.destroy();
           this.destroy();
         }
@@ -31,10 +40,10 @@ require([], function () {
         }
     },
     step: function (dt) {
-      this.p.y = this.p.originalY - 5 ;
+      // this.p.y = this.p.originalY - 5 ;
       this.p.distance += 1;
 
-      if (this.p.distance === 60) {
+      if (this.p.distance === 100) {
         this.destroy();
       }
     }

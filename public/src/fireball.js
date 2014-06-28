@@ -10,6 +10,12 @@ require([], function () {
 
       this.add('2d, aiBounce');
 
+      this.on('bump.bottom',function(collision) {
+        if(collision.obj.isA('TileLayer')) {
+          this.p.vy = -300;
+        }
+      });
+
       this.on("bump.left,bump.right", function (collision) {
         if (collision.obj.isA('Player')) {
           return;
