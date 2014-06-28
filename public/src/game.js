@@ -4,7 +4,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var CURRENT_LEVEL = 'debug';
+var CURRENT_LEVEL = 'level1';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 
@@ -130,11 +130,11 @@ require(objectFiles, function () {
 
     stage.on('complete',function() { Q.stageScene('level2'); });
 
-    stage.insert(new Q.Door({ x: 1520, y: 100 }));
+    stage.insert(new Q.MovingBar({ x: 1650, y: 150, yDistance: 300 }));
+    stage.insert(new Q.MovingBar({ x: 2725, y: 150, yDistance: 300 }));
+    stage.insert(new Q.MovingBar({ x: 2900, y: 150, yDistance: 300 }));
 
-    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
-
-    var player = new Q.Alex({ x: 50, y: 100 });
+    var player = new Q.Alex({ x: 2250, y: 100 });
     stage.add('viewport').follow(player);
 
     stage.insert(player);

@@ -5,13 +5,14 @@ require([], function () {
         sheet: "bar",
         vx: 0,
         vy: 0,
-        yDistance: 100,
+        yDistance: 50,
         yTravel: 0,
+        isGoingUp: false,
         gravity: 0,
-        isGoingUp: false
+        speed: 2
       });
 
-      this.add('2d, aiBounce');
+      this.add('aiBounce');
     },
     step: function (dt) {
       this.p.yTravel += 1;
@@ -22,9 +23,9 @@ require([], function () {
       }
 
       if (this.p.isGoingUp) {
-        this.p.y -= 1;
+        this.p.y -= this.p.speed;
       } else {
-        this.p.y += 1;
+        this.p.y += this.p.speed;
       }
     }
   });
