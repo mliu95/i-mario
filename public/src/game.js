@@ -25,7 +25,7 @@ Q.animations('goomba', {
 
 var objectFiles = [
   './src/players',
-  './src/goomba',
+  './src/enemies',
   './src/boss',
   './src/narwhal',
   './src/dragon',
