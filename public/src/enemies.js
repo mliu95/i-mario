@@ -4,11 +4,22 @@ Q.Sprite.extend('Enemy',{
     this.addEventListeners();
     this.on('damage', 'onDamage');
   },
+  insertHealthDisplay: function () {
+    var hd = new Q.HealthDisplay();
+    this.p.healthDisplay = hd;
+    this.stage.insert(hd);
+    hd.followObject(this);
+  },
   onDamage: function (points) {
+    if(this.p.health === this.p.originalHealth){
+      this.insertHealthDisplay();
+    }
+
     this.p.health -= points;
 
     if (this.p.health <= 0) {
       this.destroy();
+      this.p.healthDisplay.destroy();
     }
     // TODO: Stage an enemy death scene
     //Q.audio.play('/sounds/mario_die.wav');
@@ -41,6 +52,8 @@ Q.Enemy.extend('Goomba', {
       sheet: 'goomba',
       sprite: 'goomba',
       vx: 100,
+      originalHealth: 50,
+      health: 50,
       scale: 0.15
     });
   }
@@ -53,7 +66,8 @@ require(['./src/dragon_fire'], function () {
         sheet: 'goomba',
         sprite: 'goomba',
         vx: 100,
-        health: 100,
+        health: 50,
+        originalHealth: 50,
         scale: 0.15,
         fireStep: 0
       });
@@ -99,6 +113,7 @@ Q.Enemy.extend('Narwhal', {
       sprite: 'goomba',
       vx: 100,
       health: 30,
+      originalHealth: 30,
       scale: 0.15
     });
     this.className = 'Enemy';
@@ -144,7 +159,8 @@ require(['./src/snowball'], function () {
         sprite: 'goomba',
         scale: 0.15,
         snowballStep: 0,
-        health: 30 
+        health: 30,
+        originalHealth: 30
       });
       this.className = 'Enemy';
     },

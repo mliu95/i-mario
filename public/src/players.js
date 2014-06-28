@@ -17,6 +17,8 @@ require(['./src/fireball'], function () {
         }
 
         if (collision.obj.isA('Mashroom')){
+          this.p.health += 20;
+          Q.state.set("health", this.p.health);
           this.p.bullets += 20;
           Q.state.set("bullets", this.p.bullets);
           Q.audio.play('/sounds/powerup.wav');
@@ -31,16 +33,22 @@ require(['./src/fireball'], function () {
 
       this.on('damage', 'onDamage');
     },
+    insertHealthDisplay: function () {
+      var hd = new Q.HealthDisplay();
+      this.p.healthDisplay = hd;
+      hd.followObject(this);
+      this.stage.insert(hd);
+    },
     onDamage: function () {
       this.p.health -= 100;
       Q.state.set("health", this.p.health);
 
-      if (this.p.health > 0) {
-        return;
+      if (this.p.health <= 0) {
+        Q.audio.play('/sounds/mario_die.wav');
+        Q.stageScene("playerDead",1, { label: "You Died" });
+        this.destroy();
+        this.p.healthDisplay.destroy();
       }
-      Q.audio.play('/sounds/mario_die.wav');
-      Q.stageScene("playerDead",1, { label: "You Died" });
-      this.destroy();
     },
     fireWeapon: function () {
       if (this.p.bullets === 0 || this.p.bullets === undefined) {
@@ -62,6 +70,15 @@ require(['./src/fireball'], function () {
       Q.audio.play('/sounds/fireball.wav');
     },
     step: function (dt) {
+      if(!this.p.healthDisplay){
+        this.insertHealthDisplay();
+      }
+      if(this.p.jumping && !this.p.jumpInput){
+        this.p.jumpInput = true;
+        Q.audio.play('/sounds/jump.wav', {"debounce": 500});
+      } else if(!this.p.jumping && this.p.vy === 0){
+        this.p.jumpInput = false;
+      }
       if(this.p.vx > 0) {
         this.p.flip='x';
         this.play('run_right');
@@ -79,7 +96,9 @@ require(['./src/fireball'], function () {
         sheet: 'player',
         sprite: 'player',
         flip: 'x',
-        health: 20,
+        health: 2000,
+        jumpInput: false,
+        originalHealth: 2000,
         bullets: 0,
         power: 10
       });

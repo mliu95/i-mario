@@ -15,6 +15,17 @@ Q.animations('player', {
   stand_left: { frames: [4], rate: 1/3 },
 });
 
+Q.animations('health', {
+  s0: { frames: [0] },
+  s1: { frames: [1] },
+  s2: { frames: [2] },
+  s3: { frames: [3] },
+  s4: { frames: [4] },
+  s5: { frames: [5] },
+  s6: { frames: [6] },
+  s7: { frames: [7] }
+});
+
 Q.animations('princess', {
   cry: { frames: [1, 2, 3, 4, 5, 6, 7], rate: 1/2 }
 });
@@ -33,6 +44,7 @@ var objectFiles = [
   './src/boss',
   './src/mashroom',
   './src/princess',
+  './src/health_display',
   './src/beer',
   './src/door'
 ];
@@ -48,6 +60,7 @@ require(objectFiles, function () {
     stage.add("viewport").follow(player);
 
     stage.insert(player);
+    player.insertHealthDisplay();
 
     // stage.insert(new Q.Narwhal({ x: 450, y: 100}));
     // stage.insert(new Q.Narwhal({ x: 470, y: 550}));
@@ -105,6 +118,7 @@ require(objectFiles, function () {
     stage.add('viewport').follow(player);
 
     stage.insert(player);
+    player.insertHealthDisplay();
 
     stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
 
@@ -124,6 +138,8 @@ require(objectFiles, function () {
 
     stage.insert(new Q.Door({ x: 1520, y: 100 }));
 
+    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
+
     var player = new Q.Alex({ x: 50, y: 100 });
     stage.add('viewport').follow(player);
 
@@ -139,6 +155,7 @@ require(objectFiles, function () {
     stage.add('viewport').follow(player);
 
     stage.insert(player);
+    player.insertHealthDisplay();
 
     stage.on('complete',function() { Q.stageScene('level3'); });
   });
@@ -152,6 +169,7 @@ require(objectFiles, function () {
     stage.add('viewport').follow(player);
 
     stage.insert(player);
+    player.insertHealthDisplay();
 
     stage.on('complete',function() { Q.stageScene('level3'); });
   });
@@ -165,6 +183,7 @@ require(objectFiles, function () {
     stage.add('viewport').follow(player);
 
     stage.insert(player);
+    player.insertHealthDisplay();
 
     stage.on('complete',function() { Q.stageScene('level4'); });
   });
@@ -207,8 +226,9 @@ require(objectFiles, function () {
     '/sounds/fireball.wav',
     '/sounds/boss_fireball.wav',
     '/sounds/gulp.wav',
-    '/sounds/jump.wav',
+    '/images/health.png',
     '/sounds/mario_die.wav',
+    '/sounds/jump.wav',
     '/sounds/powerup.wav',
     '/sounds/world_clear.wav'
   ];
@@ -225,6 +245,7 @@ require(objectFiles, function () {
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
     Q.sheet('door', '/images/door.png', { tilew: 188, tileh: 225 });
+    Q.sheet('health', '/images/health.png', { tilew: 16, tileh: 16 });
     Q.stageScene('level1');
     Q.state.reset({ "bullets": 0, "health": 10000000 });
     Q.stageScene("ui", 1);
