@@ -169,7 +169,7 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
 
-    stage.insert(new Q.Princess({ x: 1700, y: 360 }));
+    stage.insert(new Q.Penguin({ x: 1700, y: 360 }));
 
     var player = new Q.Alex({ x: 1620, y: 20, bullets: playButtles, health: playerHealth });
     stage.insert(player);
@@ -240,6 +240,7 @@ require(objectFiles, function () {
     Q.sheet('princess', '/images/princess.gif', { tilew: 24, tileh: 44 });
     Q.sheet('boss', '/images/boss.png', { tilew: 230 , tileh: 201 });
     Q.sheet('goomba', '/images/monster.png', { tilew: 500, tileh: 437 });
+    Q.sheet('penguin', '/images/goomba.png', { tilew: 206, tileh: 206 });
     Q.sheet('dragon', '/images/fluffy.png', { tilew: 500, tileh: 392 });
     Q.sheet('narwhal', '/images/narwhal.png', { tilew: 800, tileh: 434 });
     Q.sheet('mashroom', '/images/mashroom.png', { tilew: 483, tileh: 480 });

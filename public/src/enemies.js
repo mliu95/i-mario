@@ -163,8 +163,7 @@ require(['./src/snowball'], function () {
   Q.Enemy.extend('Penguin',{
     init: function(p) {
       this._super(p, {
-        sheet: 'goomba',
-        sprite: 'goomba',
+        sheet: 'penguin',
         scale: 0.15,
         snowballStep: 0,
         health: 30,
