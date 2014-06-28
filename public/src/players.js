@@ -75,6 +75,7 @@ require(['./src/fireball'], function () {
       if(this.p.y > 1000) {
         Q.stageScene('playerDead', 1, { label: "You died!" });
         this.destroy();
+        this.p.healthDisplay.destroy();
         Q.audio.play('/sounds/mario_die.wav');
       } else if(this.p.vx > 0) {
         this.p.flip='x';
