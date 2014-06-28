@@ -15,9 +15,11 @@ require(['./src/fireball'], function () {
 
       this.on('hit.sprite',function (collision) {
         if (collision.obj.isA('Princess')) {
-          Q.stageScene('playerDead', 1, { label: 'You Won!' });
+          var princess = collision.obj;
+          this.stage.insert(new Q.Fireball({ x: princess.p.x - 15, y: princess.p.y, vx: -250 }));
+          Q.stageScene('playerDead', 1, { label: "You died! This princess doesn't need rescuing." });
           this.destroy();
-          Q.audio.play('/sounds/world_clear.wav');
+          Q.audio.play('/sounds/mario_die.wav');
         }
 
         if (collision.obj.isA('Mashroom')){

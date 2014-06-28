@@ -21,9 +21,9 @@ require([], function () {
           return;
         }
 
-        // if (collision.obj.isDamagable()) {
-          this.destroy();
-        // }
+        if (collision.obj.isA('Enemy')) {
+          collision.obj.trigger('damage');
+        }
       });
     },
     step: function (dt) {
