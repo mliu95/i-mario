@@ -164,7 +164,7 @@ require(['./src/snowball'], function () {
     init: function(p) {
       this._super(p, {
         sheet: 'penguin',
-        scale: 0.15,
+        scale: 0.25,
         snowballStep: 0,
         health: 30,
         originalHealth: 30
