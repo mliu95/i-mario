@@ -40,7 +40,7 @@ require([], function () {
         }
     },
     step: function (dt) {
-      this.p.y = this.p.originalY - 5 ;
+      // this.p.y = this.p.originalY - 5 ;
       this.p.distance += 1;
 
       if (this.p.distance === 100) {
