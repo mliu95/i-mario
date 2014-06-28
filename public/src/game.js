@@ -4,7 +4,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var CURRENT_LEVEL = 'level1';
+var CURRENT_LEVEL = 'debug';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 
@@ -35,7 +35,8 @@ var objectFiles = [
   './src/mashroom',
   './src/princess',
   './src/beer',
-  './src/door'
+  './src/door',
+  './src/stage_elements'
 ];
 
 require(objectFiles, function () {
@@ -50,16 +51,7 @@ require(objectFiles, function () {
 
     stage.insert(player);
 
-    // stage.insert(new Q.Narwhal({ x: 450, y: 100}));
-    // stage.insert(new Q.Narwhal({ x: 470, y: 550}));
-    //stage.insert(new Q.Narwhal({ x: 480, y: 550}));
-
-
-    // stage.insert(new Q.Penguin({ x: 500, y: 70 }));
-
     stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
-    // stage.insert(new Q.Goomba({ x: 550, y: 100 }));
-    // stage.insert(new Q.Goomba({ x: 750, y: 100 }));
 
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
@@ -136,10 +128,11 @@ require(objectFiles, function () {
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
 
+    stage.insert(new Q.MovingBar({ x: 100, y: 200 }));
+    stage.insert(new Q.MovingBar({ x: 250, y: 200 }));
+
     var player = new Q.Alex({ x: 50, y: 100 });
-
     stage.add('viewport').follow(player);
-
     stage.insert(player);
 
     stage.on('complete',function() { Q.stageScene('level3'); });
@@ -205,6 +198,7 @@ require(objectFiles, function () {
     '/images/mario_fireball.gif',
     '/images/boss_fireball.gif',
     '/images/beer.png',
+    '/images/bar.png',
     '/images/door.png',
     '/sounds/fireball.wav',
     '/sounds/boss_fireball.wav',
@@ -226,6 +220,7 @@ require(objectFiles, function () {
     Q.sheet('bossfire', '/images/boss_fireball.gif', { tilew: 48, tileh: 16 });
     Q.sheet('beer', '/images/beer.png', { tilew: 32, tileh: 32 });
     Q.sheet('door', '/images/door.png', { tilew: 188, tileh: 225 });
+    Q.sheet('bar', '/images/bar.png', { tilew: 134, tileh: 32 });
     Q.stageScene('level1');
     Q.state.reset({ "bullets": 0, "health": 10000000 });
     Q.stageScene("ui", 1);

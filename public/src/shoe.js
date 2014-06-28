@@ -20,7 +20,6 @@ require([], function () {
         }
       });
 
-
       this.on("bump.left, bump.top, bump.right", function (collision) {
         if (collision.obj.isA('Player')) {
           collision.obj.trigger('damage', this.p.power);
