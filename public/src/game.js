@@ -8,8 +8,6 @@ var CURRENT_LEVEL = 'debug';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 
-var player;
-
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
   run_right: { frames: [3, 1, 2], rate: 1/5 },
@@ -33,7 +31,7 @@ Q.animations('princess', {
 });
 
 Q.animations('boss', {
-  walk: { frames: [1, 2, 3, 4, 5], rate: 1/2 }
+  walk: { frames: [0, 1, 4, 5], rate: 1/2 }
 });
 
 var objectFiles = [
@@ -50,28 +48,6 @@ var objectFiles = [
 ];
 
 require(objectFiles, function () {
-  var currentLevel = 'debug';
-  Q.scene(currentLevel,function(stage) {
-    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
-
-    var player = new Q.Alex({ x: 50, y: 220 });
-
-    stage.add("viewport").follow(player);
-
-    stage.insert(player);
-    player.insertHealthDisplay();
-    stage.viewport.offsetX = 130;
-    stage.viewport.offsetY = 200;
-
-    stage.insert(new Q.Narwhal({ x: 500, y: 100 }));
-
-    stage.insert(new Q.Beer({ x: 300, y: 505 }));
-    stage.insert(new Q.Beer({ x: 330, y: 505 }));
-    stage.insert(new Q.Beer({ x: 360, y: 505 }));
-
-    stage.insert(new Q.Mashroom({ x: 495, y: 250 }));
-  });
 
   Q.scene('ui', function(stage){
     UiHealth.innerHTML = "Health: " + Q.state.get("health");
@@ -163,13 +139,6 @@ require(objectFiles, function () {
     stage.insert(new Q.Penguin({ x: 2150, y: 450 }));
     stage.insert(new Q.Penguin({ x: 2300, y: 450 }));
 
-    var player = new Q.Alex({ x: 50, y: 100 });
-    stage.add('viewport').follow(player);
-    stage.viewport.offsetX = 130;
-    stage.viewport.offsetY = 200;
-    stage.insert(player);
-    player.insertHealthDisplay();
-
     stage.insert(new Q.Dragon({ x: 2300, y: 150 }));
 
 
@@ -177,18 +146,13 @@ require(objectFiles, function () {
     stage.insert(new Q.Narwhal({ x: 2300, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 3300, y: 450 }));
 
-
-    if(!player) {
-       player = new Q.Alex({ x: 20, y: 20 });
-    } else {
-      player.p.x = 20;
-      player.p.y = 20;
-    }
-    stage.add('viewport').follow(player);
-    // stage.viewport.offsetX = 130;
-    // stage.viewport.offsetY = 200;
-
+    var player = new Q.Alex({ x: 20, y: 20 });
     stage.insert(player);
+    player.insertHealthDisplay();
+
+    stage.add('viewport').follow(player);
+    stage.viewport.offsetX = 130;
+    stage.viewport.offsetY = 200;
   });
 
   Q.scene('level2',function(stage) {
@@ -271,7 +235,7 @@ require(objectFiles, function () {
     Q.sheet('tiles','/images/tiles.png', { tilew: 32, tileh: 32 });
     Q.sheet('player', '/images/mario1.png', { tilew: 400, tileh: 538 });
     Q.sheet('princess', '/images/princess.gif', { tilew: 24, tileh: 44 });
-    Q.sheet('boss', '/images/boss.png', { tilew: 51 , tileh: 46 });
+    Q.sheet('boss', '/images/boss.png', { tilew: 230 , tileh: 201 });
     Q.sheet('goomba', '/images/monster.png', { tilew: 500, tileh: 437 });
     Q.sheet('dragon', '/images/fluffy.png', { tilew: 500, tileh: 392 });
     Q.sheet('narwhal', '/images/narwhal.png', { tilew: 800, tileh: 434 });
@@ -283,9 +247,8 @@ require(objectFiles, function () {
     Q.sheet('door', '/images/door.png', { tilew: 188, tileh: 225 });
     Q.sheet('health', '/images/health.png', { tilew: 16, tileh: 16 });
     Q.sheet('bar', '/images/bar.png', { tilew: 134, tileh: 32 });
-    Q.stageScene('level1');
     Q.state.reset({ "bullets": 0, "health": 10000000 });
-    Q.stageScene("ui", 1);
     Q.stageScene(CURRENT_LEVEL);
+    Q.stageScene("ui", 1);
   });
 });

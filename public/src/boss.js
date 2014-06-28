@@ -5,8 +5,9 @@ require(['./src/boss_fire'], function (BossFire) {
         sheet: "boss",
         sprite: 'boss',
         frameJumpCount: 0,
-        life: 100,
-        scale: 1.25,
+        life: 500,
+        originalHealth: 500,
+        scale: 0.5,
         state: "walk",
         fireCollapsedTime: 0,
         jumpCount: 0,
@@ -29,6 +30,12 @@ require(['./src/boss_fire'], function (BossFire) {
         }
       })
     },
+    insertHealthDisplay: function () {
+      var hd = new Q.HealthDisplay();
+      this.p.healthDisplay = hd;
+      stage.insert(hd);
+      hd.followObject(this);
+    },
     switchStates: function () {
       this.p.vx = 0;
       this.p.frameJumpCount = 0;
@@ -36,6 +43,9 @@ require(['./src/boss_fire'], function (BossFire) {
       this.p.waitTime = 0;
     },
     step: function (dt) {
+      if(!this.p.healthDisplay){
+        this.insertHealthDisplay();
+      }
       var player = Q('Player').items[0];
       if(player){
         if (this.p.x - player.p.x > 0){
