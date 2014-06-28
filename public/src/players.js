@@ -9,7 +9,10 @@ require(['./src/fireball'], function () {
 
       this.on('hit.sprite',function (collision) {
         if (collision.obj.isA('Mashroom')){
-          this.p.health += 20;
+          this.p.health += 200;
+          if (this.p.health > 500){
+            this.p.health = 500;
+          }
           Q.state.set("health", this.p.health);
           this.p.bullets += 20;
           Q.state.set("bullets", this.p.bullets);
@@ -92,9 +95,9 @@ require(['./src/fireball'], function () {
         sheet: 'player',
         sprite: 'player',
         flip: 'x',
-        health: 2000,
+        health: 100,
         jumpInput: false,
-        originalHealth: 2000,
+        originalHealth: 500,
         bullets: 0,
         power: 10
       });

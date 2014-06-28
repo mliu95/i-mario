@@ -114,7 +114,7 @@ require(objectFiles, function () {
     player.insertHealthDisplay();
 
     stage.insert(new Q.Penguin({ x: 500, y: 100 }));
-
+    stage.insert(new Q.Mashroom({x: 300, y:250 }));
     stage.insert(new Q.Beer({ x: 300, y: 505 }));
     stage.insert(new Q.Beer({ x: 330, y: 505 }));
     stage.insert(new Q.Beer({ x: 360, y: 505 }));
