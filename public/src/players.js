@@ -32,7 +32,7 @@ require(['./src/fireball', 'socket.io/socket.io.js'], function () {
 
       if (this.p.health <= 0) {
         Q.audio.play('/sounds/mario_die.wav', {"debounce":3000});
-        Q.stageScene("playerDead",1, { label: "You Died" });
+        Q.stageScene("PlayerDead", 1 , { label: "You Died" });
         this.destroy();
         this.p.healthDisplay.destroy();
       }
@@ -73,7 +73,7 @@ require(['./src/fireball', 'socket.io/socket.io.js'], function () {
         this.p.jumpInput = false;
       }
       if(this.p.y > 1000) {
-        Q.stageScene('playerDead', 1, { label: "You died!" });
+        Q.stageScene('PlayerDead', 1, { label: "You died!" });
         this.destroy();
         this.p.healthDisplay.destroy();
         Q.audio.play('/sounds/mario_die.wav');
