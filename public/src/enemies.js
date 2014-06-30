@@ -37,7 +37,9 @@ Q.Sprite.extend('Enemy',{
     this.on('bump.top',function(collision) {
       if(collision.obj.isA('Player')) {
         this.destroy();
-        this.p.healthDisplay.destroy();
+        if (this.p.healthDisplay){
+          this.p.healthDisplay.destroy();
+        }
         collision.obj.p.vy = -300;
         Q.audio.play("/sounds/stomp.wav");
       }
@@ -105,7 +107,9 @@ require(['./src/dragon_fire'], function () {
       this.on('bump.top',function(collision) {
         if(collision.obj.isA('Player')) {
           this.destroy();
-          this.p.healthDisplay.destroy();
+          if (this.p.healthDisplay){
+            this.p.healthDisplay.destroy();
+          }
           collision.obj.p.vy = -300;
           Q.audio.play("/sounds/stomp.wav");
         }
@@ -137,7 +141,9 @@ Q.Enemy.extend('Narwhal', {
     this.on('bump.top',function(collision) {
       if(collision.obj.isA('Player')) {
         this.destroy();
-        this.p.healthDisplay.destroy();
+        if (this.p.healthDisplay){
+          this.p.healthDisplay.destroy();
+        }
         collision.obj.p.vy = -300;
         Q.audio.play("/sounds/stomp.wav");
       }
@@ -188,7 +194,9 @@ require(['./src/snowball'], function () {
       this.on('bump.top',function(collision) {
         if(collision.obj.isA('Player')) {
           this.destroy();
-          this.p.healthDisplay.destroy();
+          if (this.p.healthDisplay){
+            this.p.healthDisplay.destroy();
+          }
           collision.obj.p.vy = -300;
           Q.audio.play("/sounds/stomp.wav");
         }

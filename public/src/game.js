@@ -7,11 +7,12 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
 var players = [];
 
 var selfId;
-var CURRENT_LEVEL = 'level2';
+var CURRENT_LEVEL = 'level1';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 var UiPlayers = document.getElementById("players");
 var playButtles, playerHealth, socket;
+var box, button, label;
 
 require(['socket.io/socket.io.js']);
 
@@ -76,16 +77,24 @@ require(objectFiles, function () {
   });
 
   Q.scene('PlayerDead',function(stage) {
-    var box = stage.insert(new Q.UI.Container({
-      x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
+    box = stage.insert(new Q.UI.Container({
+      x: Q.width/2, y: Q.height/2, fill: 'rgba(255,255,255,0.5)'
     }));
 
-    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
-    var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+    button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
+    label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                           label: stage.options.label }));
     button.on('click',function() {
+      var arr = players.filter(function( obj ) {
+        return obj.playerId == selfId;
+      });
+      var result = arr[0];
+      players.splice( players.indexOf( result ), 1 );
+      console.log("Player regeneration");
+      player = new Q.Alex({ x: 50, y: 50, playerId: selfId, socket: socket });
+      players.push({ player: player, playerId: selfId });
       Q.clearStages();
-      Q.stageScene(CURRENT_LEVEL);
+      Q.stageScene(CURRENT_LEVEL,0, { player: player });
     });
 
     box.fit(20);
@@ -96,6 +105,13 @@ require(objectFiles, function () {
 
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
+
+    if (stage.options.player) {
+      stage.insert(player);
+      stage.add('viewport').follow(player);
+      stage.viewport.offsetX = 130;
+      stage.viewport.offsetY = 200;
+    }
 
     socket.on('connected', function (data) {
       console.log("connected");
@@ -164,7 +180,6 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 300, y: 100 }));
     stage.insert(new Q.Beer({ x: 330, y: 100 }));
     stage.insert(new Q.Beer({ x: 360, y: 100 }));
-
     stage.insert(new Q.Boss({ x: 700, y: 50 }));
 
     Q.stageScene('ui', 1);
@@ -181,27 +196,28 @@ require(objectFiles, function () {
     stage.insert(new Q.MovingBar({ x: 2725, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2900, y: 150, yDistance: 300 }));
     stage.insert(new Q.Door({ x: 3500, y: 355 }));
-
     stage.insert(new Q.Beer({ x: 1350, y: 370 }));
     stage.insert(new Q.Beer({ x: 2150, y: 650 }));
     stage.insert(new Q.Beer({ x: 2250, y: 650 }));
     stage.insert(new Q.Beer({ x: 1950, y: 360 }));
     stage.insert(new Q.Beer({ x: 2450, y: 360 }));
-
     stage.insert(new Q.Mashroom({ x: 2450, y: 150 }));
-
     stage.insert(new Q.Goomba({ x: 600, y: 400 }));
     stage.insert(new Q.Goomba({ x: 650, y: 400 }));
     stage.insert(new Q.Goomba({ x: 1150, y: 400 }));
-
     stage.insert(new Q.Penguin({ x: 2150, y: 450 }));
     stage.insert(new Q.Penguin({ x: 2300, y: 450 }));
-
     stage.insert(new Q.Dragon({ x: 2300, y: 150 }));
-
     stage.insert(new Q.Narwhal({ x: 2150, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 2300, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 3300, y: 450 }));
+
+    if (stage.options.player) {
+      stage.insert(player);
+      stage.add('viewport').follow(player);
+      stage.viewport.offsetX = 130;
+      stage.viewport.offsetY = 200;
+    }
 
     socket.on('connected', function (data) {
       console.log("connected");
@@ -258,6 +274,7 @@ require(objectFiles, function () {
         result.player.p.health = data['health'];
       }
     });
+
     stage.on('complete',function() {
       playerHealth = player.p.health;
       playButtles = player.p.bullets;
@@ -271,6 +288,13 @@ require(objectFiles, function () {
 
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level2.json', sheet: 'tiles' }));
+
+    if (stage.options.player) {
+      stage.insert(player);
+      stage.add('viewport').follow(player);
+      stage.viewport.offsetX = 130;
+      stage.viewport.offsetY = 200;
+    }
 
     stage.insert(new Q.Princess({ x: 1700, y: 360 }));
     stage.insert(new Q.Boss({ x: 1000, y: 360 }));
@@ -295,22 +319,6 @@ require(objectFiles, function () {
     stage.viewport.offsetY = 200;
 
     stage.on('complete', function() { debugger; alert('You Won!!!')});
-  });
-
-  Q.scene('playerDead',function(stage) {
-    var box = stage.insert(new Q.UI.Container({
-      x: Q.width/2, y: Q.height/2, fill: 'rgba(0,0,0,0.5)'
-    }));
-
-    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
-    var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
-                                          label: stage.options.label }));
-    button.on('click',function() {
-      Q.clearStages();
-      Q.stageScene(CURRENT_LEVEL); // Start over at the same level.
-    });
-
-    box.fit(20);
   });
 
   var images;
