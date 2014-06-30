@@ -4,7 +4,10 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
-var CURRENT_LEVEL = 'debug';
+var players = [];
+
+var selfId;
+var CURRENT_LEVEL = 'level2';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 var UiPlayers = document.getElementById("players");
@@ -12,7 +15,7 @@ var playButtles, playerHealth, socket;
 
 require(['socket.io/socket.io.js']);
 
-socket = io.connect('http://localhost');
+socket = io.connect('10.4.20.129:3000');
 
 playButtles = 0;
 playerHealth = 100;
@@ -95,24 +98,59 @@ require(objectFiles, function () {
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
 
     socket.on('connected', function (data) {
+      console.log("connected");
       UiPlayers.innerHTML = "Players: " + data['playerCount'];
-      var player = new Q.Alex({ x: 50, y: 50 });
+      var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
+      players.push({ player: player, playerId: data['playerId'] });
       stage.insert(player);
-      player.insertHealthDisplay();
     });
 
     socket.on('selfConnect', function (data) {
-      console.log("a");
-      UiPlayers.innerHTML = "Players: " + data['playerCount'];
-      var player = new Q.Alex({ x: 50, y: 50 });
-      stage.insert(player);
-      stage.add('viewport').follow(player);
-      stage.viewport.offsetX = 130;
-      stage.viewport.offsetY = 200;
+      console.log("selfConnect");
+      if(!selfId){
+        console.log("New player");
+        UiPlayers.innerHTML = "Players: " + data['playerCount'];
+        selfId = data['playerId'];
+        console.log(selfId);
+        var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], socket: socket });
+        players.push({ player: player, playerId: data['playerId'] });
+        stage.insert(player);
+        stage.add('viewport').follow(player);
+        stage.viewport.offsetX = 130;
+        stage.viewport.offsetY = 200;
+      }
     });
 
     socket.on('disconnected', function (data) {
+      console.log("disconnected");
       UiPlayers.innerHTML = "Players: " + data['playerCount'];
+      var arr = players.filter(function( obj ) {
+        return obj.playerId == data['playerId'] ;
+      });
+      var result = arr[0];
+      if (arr.length != 0) {
+        result.player.p.healthDisplay.destroy();
+        result.player.destroy();
+      }
+    });
+
+    socket.on('information', function (data) {
+      var arr = players.filter(function( obj ) {
+        return obj.playerId == data['playerId'] ;
+      });
+      var result = arr[0]
+      if (arr.length == 0){
+        console.log("new ghost");
+        var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
+        players.push({ player: player, playerId: data['playerId'] });
+        stage.insert(player);
+      } else if (result.playerId != selfId){
+        result.player.p.x = data['x'];
+        result.player.p.y = data['y'];
+        result.player.p.vx = data['x'];
+        result.player.p.vy = data['vy'];
+        result.player.p.health = data['health'];
+      }
     });
 
     stage.insert(new Q.Mashroom({x: 300, y:100 }));
@@ -165,13 +203,61 @@ require(objectFiles, function () {
     stage.insert(new Q.Narwhal({ x: 2300, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 3300, y: 450 }));
 
-    var player = new Q.Alex({ x: 20, y: 20, bullets: playButtles, health: playerHealth });
-    stage.insert(player);
+    socket.on('connected', function (data) {
+      console.log("connected");
+      UiPlayers.innerHTML = "Players: " + data['playerCount'];
+      var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
+      players.push({ player: player, playerId: data['playerId'] });
+      stage.insert(player);
+    });
 
-    stage.add('viewport').follow(player);
-    stage.viewport.offsetX = 130;
-    stage.viewport.offsetY = 200;
+    socket.on('selfConnect', function (data) {
+      console.log("selfConnect");
+      if(!selfId){
+        console.log("New player");
+        UiPlayers.innerHTML = "Players: " + data['playerCount'];
+        selfId = data['playerId'];
+        console.log(selfId);
+        var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], socket: socket });
+        players.push({ player: player, playerId: data['playerId'] });
+        stage.insert(player);
+        stage.add('viewport').follow(player);
+        stage.viewport.offsetX = 130;
+        stage.viewport.offsetY = 200;
+      }
+    });
 
+    socket.on('disconnected', function (data) {
+      console.log("disconnected");
+      UiPlayers.innerHTML = "Players: " + data['playerCount'];
+      var arr = players.filter(function( obj ) {
+        return obj.playerId == data['playerId'] ;
+      });
+      var result = arr[0];
+      if (arr.length != 0) {
+        result.player.p.healthDisplay.destroy();
+        result.player.destroy();
+      }
+    });
+
+    socket.on('information', function (data) {
+      var arr = players.filter(function( obj ) {
+        return obj.playerId == data['playerId'] ;
+      });
+      var result = arr[0]
+      if (arr.length == 0){
+        console.log("new ghost");
+        var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
+        players.push({ player: player, playerId: data['playerId'] });
+        stage.insert(player);
+      } else if (result.playerId != selfId){
+        result.player.p.x = data['x'];
+        result.player.p.y = data['y'];
+        result.player.p.vx = data['x'];
+        result.player.p.vy = data['vy'];
+        result.player.p.health = data['health'];
+      }
+    });
     stage.on('complete',function() {
       playerHealth = player.p.health;
       playButtles = player.p.bullets;
