@@ -111,7 +111,7 @@ require(['./src/fireball'], function () {
       this.on('damage', 'onDamage');
     }
   });
-  Q.Player.extend('Ghost',{
+  Q.Sprite.extend('Ghost',{
     init: function(p) {
       this._super(p, {
         sheet: 'player',
@@ -127,7 +127,13 @@ require(['./src/fireball'], function () {
       });
       this.className = 'Ghost';
       Q.state.set("health", this.p.health);
-      this.add('2d, animation');
+      this.add('animation');
+    },
+    insertHealthDisplay: function () {
+      var hd = new Q.HealthDisplay();
+      this.p.healthDisplay = hd;
+      hd.followObject(this);
+      this.stage.insert(hd);
     },
     step: function (dt) {
       if(!this.p.healthDisplay){
