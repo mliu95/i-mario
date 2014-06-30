@@ -1,4 +1,4 @@
-require(['./src/fireball'], function () {
+require(['./src/fireball', 'socket.io/socket.io.js'], function () {
   Q.Sprite.extend('Player', {
     init: function(p, hash) {
       this._super(p, hash);
@@ -31,7 +31,7 @@ require(['./src/fireball'], function () {
       Q.state.set("health", this.p.health);
 
       if (this.p.health <= 0) {
-        Q.audio.play('/sounds/mario_die.wav');
+        Q.audio.play('/sounds/mario_die.wav', {"debounce":3000});
         Q.stageScene("playerDead",1, { label: "You Died" });
         this.destroy();
         this.p.healthDisplay.destroy();
@@ -86,6 +86,9 @@ require(['./src/fireball'], function () {
       } else {
         this.play('stand_' + this.p.direction);
       }
+      if (this.p.socket){
+        this.p.socket.emit('information', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, vx: this.p.vx, vy: this.p.vy, health: this.p.health });
+      }
     }
   });
   Q.Player.extend('Alex',{
@@ -107,15 +110,16 @@ require(['./src/fireball'], function () {
       this.add('2d, platformerControls, animation');
 
       Q.input.on('fire', this, 'fireWeapon');
-
       this.on('damage', 'onDamage');
     }
   });
+});
+require(['./src/fireball', 'socket.io/socket.io.js'], function () {
   Q.Sprite.extend('Ghost',{
     init: function(p) {
       this._super(p, {
         sheet: 'player',
-        sprite: 'player',
+        // sprite: 'player',
         flip: 'x',
         health: 100,
         jumpInput: false,
@@ -127,7 +131,7 @@ require(['./src/fireball'], function () {
       });
       this.className = 'Ghost';
       Q.state.set("health", this.p.health);
-      this.add('animation');
+      // this.add('animation');
     },
     insertHealthDisplay: function () {
       var hd = new Q.HealthDisplay();
@@ -150,12 +154,12 @@ require(['./src/fireball'], function () {
         this.p.healthDisplay.destroy();
       } else if(this.p.vx > 0) {
         this.p.flip='x';
-        this.play('run_right');
+        // this.play('run_right');
       } else if(this.p.vx < 0) {
         this.p.flip='';
-        this.play('run_left');
+        // this.play('run_left');
       } else {
-        this.play('stand_' + this.p.direction);
+        // this.play('stand_' + this.p.direction);
       }
     }
   });
