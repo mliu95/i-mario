@@ -17,11 +17,11 @@ io.on('connection', function (socket) {
   socket.playerId = id;
   setTimeout(function(){socket.emit('selfConnect', { playerCount: playerCount, playerId: id })}, 1500);
   socket.broadcast.emit('connected', { playerCount: playerCount, playerId: socket.playerId });
-  console.log("Player connected, count: " + playerCount);
+  console.log(new Date + " Player connected, count: " + playerCount);
   socket.on('disconnect', function (){
     playerCount--;
     io.emit('disconnected', { playerCount: playerCount, playerId: this.playerId });
-    console.log("Player disconnected, count: " + playerCount);
+    console.log(new Date + " Player disconnected, count: " + playerCount);
   });
   socket.on('information', function(data){
     io.emit('information', data);

@@ -11,15 +11,11 @@ var CURRENT_LEVEL = 'level1';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 var UiPlayers = document.getElementById("players");
-var playButtles, playerHealth, socket;
-var box, button, label;
+var box, button, label, socket;
 
 require(['socket.io/socket.io.js']);
 
 socket = io.connect('10.4.20.129:3000');
-
-playButtles = 0;
-playerHealth = 100;
 
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
@@ -62,63 +58,10 @@ var objectFiles = [
 ];
 
 require(objectFiles, function () {
-
-  Q.scene('ui', function(stage){
-    UiHealth.innerHTML = "Health: " + Q.state.get("health");
-    UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
-
-    Q.state.on("change.health", this, function() {
-      UiHealth.innerHTML = "Health: " + Q.state.get("health");
-    });
-
-    Q.state.on("change.bullets", this, function() {
-      UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
-    });
-  });
-
-  Q.scene('PlayerDead',function(stage) {
-    box = stage.insert(new Q.UI.Container({
-      x: Q.width/2, y: Q.height/2, fill: 'rgba(255,255,255,0.5)'
-    }));
-
-    button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: '#CCCCCC', label: 'Play Again' }));
-    label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
-                                          label: stage.options.label }));
-    button.on('click',function() {
-      var arr = players.filter(function( obj ) {
-        return obj.playerId == selfId;
-      });
-      var result = arr[0];
-      players.splice( players.indexOf( result ), 1 );
-      console.log("Player regeneration");
-      player = new Q.Alex({ x: 50, y: 50, playerId: selfId, socket: socket });
-      players.push({ player: player, playerId: selfId });
-      Q.clearStages();
-      Q.stageScene(CURRENT_LEVEL,0, { player: player });
-    });
-
-    box.fit(20);
-  });
-
-  Q.scene('debug',function(stage) {
-    CURRENT_LEVEL = 'debug';
-
-    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
-    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
-
-    if (stage.options.player) {
-      stage.insert(player);
-      stage.add('viewport').follow(player);
-      stage.viewport.offsetX = 130;
-      stage.viewport.offsetY = 200;
-    }
-
+  function setUp (stage, level) {
     socket.on('connected', function (data) {
       console.log("connected");
       UiPlayers.innerHTML = "Players: " + data['playerCount'];
-      var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
-      players.push({ player: player, playerId: data['playerId'] });
-      stage.insert(player);
     });
 
     socket.on('selfConnect', function (data) {
@@ -128,7 +71,7 @@ require(objectFiles, function () {
         UiPlayers.innerHTML = "Players: " + data['playerCount'];
         selfId = data['playerId'];
         console.log(selfId);
-        var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], socket: socket });
+        var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], level: level, socket: socket });
         players.push({ player: player, playerId: data['playerId'] });
         stage.insert(player);
         stage.add('viewport').follow(player);
@@ -144,7 +87,7 @@ require(objectFiles, function () {
         return obj.playerId == data['playerId'] ;
       });
       var result = arr[0];
-      if (arr.length != 0) {
+      if (arr.length != 0 && result.player.p.level === level) {
         result.player.p.healthDisplay.destroy();
         result.player.destroy();
       }
@@ -152,22 +95,91 @@ require(objectFiles, function () {
 
     socket.on('information', function (data) {
       var arr = players.filter(function( obj ) {
-        return obj.playerId == data['playerId'] ;
+        return obj.playerId == data['playerId'];
       });
       var result = arr[0]
-      if (arr.length == 0){
-        console.log("new ghost");
-        var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
-        players.push({ player: player, playerId: data['playerId'] });
-        stage.insert(player);
-      } else if (result.playerId != selfId){
-        result.player.p.x = data['x'];
-        result.player.p.y = data['y'];
-        result.player.p.vx = data['x'];
-        result.player.p.vy = data['vy'];
-        result.player.p.health = data['health'];
+      if(data['level'] === level){
+        if (arr.length == 0){
+          console.log("new ghost");
+          var player = new Q.Ghost({ x: 50, y: 50, level: data['level'], playerId: data['playerId'] });
+          players.push({ player: player, playerId: data['playerId'] });
+          stage.insert(player);
+        } else if (result.playerId != selfId){
+          result.player.p.x = data['x'];
+          result.player.p.y = data['y'];
+          result.player.p.vx = data['x'];
+          result.player.p.vy = data['vy'];
+          result.player.p.health = data['health'];
+        }
       }
     });
+
+    stage.on('complete',function() {
+      var arr = players.filter(function( obj ) {
+        return obj.playerId == selfId;
+      });
+      var result = arr[0];
+      var playerHealth = result.player.p.health;
+      var playerFireballs = result.player.p.bullets;
+      players.splice( players.indexOf( result ), 1 );
+      console.log("Player moving to next level");
+      CURRENT_LEVEL = 'level2';
+      player = new Q.Alex({ x: 50, y: 50, playerId: selfId, socket: socket, level: level, health: playerHealth, bullets: playerFireballs });
+      players.push({ player: player, playerId: selfId });
+      Q.clearStages();
+      Q.stageScene(nextLevel, 1, { player: player });
+    });
+  }
+
+  Q.scene('ui', function(stage){
+    UiHealth.innerHTML = "Health: " + Q.state.get("health");
+    UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
+
+    Q.state.on("change.health", this, function() {
+      UiHealth.innerHTML = "Health: " + Q.state.get("health");
+    });
+
+    Q.state.on("change.bullets", this, function() {
+      UiFireballs.innerHTML = "Fireballs: " + Q.state.get("bullets");
+    });
+  });
+
+  Q.scene('PlayerDead',function(stage) {
+    button = stage.insert(new Q.UI.Button({ x: Q.width/2, y: Q.height/2, fill: '#CCCCCC', label: 'Play Again' }));
+    button.on('click',function() {
+      var arr = players.filter(function( obj ) {
+        return obj.playerId == selfId;
+      });
+      var result = arr[0];
+      result.player.p.healthDisplay.destroy();
+      result.player.destroy();
+      // players.splice( players.indexOf( result ), 1 );
+      players = [];
+      console.log("Player regeneration");
+      player = new Q.Alex({ x: 50, y: 50, playerId: selfId, level: CURRENT_LEVEL, socket: socket });
+      players.push({ player: player, playerId: selfId });
+      Q.clearStages();
+      Q.stageScene(CURRENT_LEVEL,1, { player: player });
+      Q.state.set("health", player.p.health);
+      Q.state.set("bullets", player.p.bullets);
+    });
+
+  });
+
+  Q.scene('debug',function(stage) {
+    CURRENT_LEVEL = 'debug';
+
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/debug.json', sheet: 'tiles' }));
+
+    if (stage.options.player) {
+      stage.insert(player);
+      stage.add('viewport').follow(player);
+      stage.viewport.offsetX = 130;
+      stage.viewport.offsetY = 200;
+    }
+
+    setUp(stage, 'debug', 'level1');
 
     stage.insert(new Q.Mashroom({x: 300, y:100 }));
     stage.insert(new Q.Mashroom({x: 290, y:100 }));
@@ -182,15 +194,22 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 360, y: 100 }));
     stage.insert(new Q.Boss({ x: 700, y: 50 }));
 
-    Q.stageScene('ui', 1);
   });
 
   Q.scene('level1',function(stage) {
-
     CURRENT_LEVEL = 'level1';
 
     stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level1.json', sheet: 'tiles' }));
+
+    if (stage.options.player) {
+      stage.insert(player);
+      stage.add('viewport').follow(player);
+      stage.viewport.offsetX = 130;
+      stage.viewport.offsetY = 200;
+    }
+
+    setUp(stage, 'level1', 'level2');
 
     stage.insert(new Q.MovingBar({ x: 1650, y: 150, yDistance: 300 }));
     stage.insert(new Q.MovingBar({ x: 2725, y: 150, yDistance: 300 }));
@@ -212,75 +231,6 @@ require(objectFiles, function () {
     stage.insert(new Q.Narwhal({ x: 2300, y: 650 }));
     stage.insert(new Q.Narwhal({ x: 3300, y: 450 }));
 
-    if (stage.options.player) {
-      stage.insert(player);
-      stage.add('viewport').follow(player);
-      stage.viewport.offsetX = 130;
-      stage.viewport.offsetY = 200;
-    }
-
-    socket.on('connected', function (data) {
-      console.log("connected");
-      UiPlayers.innerHTML = "Players: " + data['playerCount'];
-      var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
-      players.push({ player: player, playerId: data['playerId'] });
-      stage.insert(player);
-    });
-
-    socket.on('selfConnect', function (data) {
-      console.log("selfConnect");
-      if(!selfId){
-        console.log("New player");
-        UiPlayers.innerHTML = "Players: " + data['playerCount'];
-        selfId = data['playerId'];
-        console.log(selfId);
-        var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], socket: socket });
-        players.push({ player: player, playerId: data['playerId'] });
-        stage.insert(player);
-        stage.add('viewport').follow(player);
-        stage.viewport.offsetX = 130;
-        stage.viewport.offsetY = 200;
-      }
-    });
-
-    socket.on('disconnected', function (data) {
-      console.log("disconnected");
-      UiPlayers.innerHTML = "Players: " + data['playerCount'];
-      var arr = players.filter(function( obj ) {
-        return obj.playerId == data['playerId'] ;
-      });
-      var result = arr[0];
-      if (arr.length != 0) {
-        result.player.p.healthDisplay.destroy();
-        result.player.destroy();
-      }
-    });
-
-    socket.on('information', function (data) {
-      var arr = players.filter(function( obj ) {
-        return obj.playerId == data['playerId'] ;
-      });
-      var result = arr[0]
-      if (arr.length == 0){
-        console.log("new ghost");
-        var player = new Q.Ghost({ x: 50, y: 50, playerId: data['playerId'] });
-        players.push({ player: player, playerId: data['playerId'] });
-        stage.insert(player);
-      } else if (result.playerId != selfId){
-        result.player.p.x = data['x'];
-        result.player.p.y = data['y'];
-        result.player.p.vx = data['x'];
-        result.player.p.vy = data['vy'];
-        result.player.p.health = data['health'];
-      }
-    });
-
-    stage.on('complete',function() {
-      playerHealth = player.p.health;
-      playButtles = player.p.bullets;
-      Q.stageScene('level2');
-    });
-
   });
 
   Q.scene('level2',function(stage) {
@@ -296,29 +246,15 @@ require(objectFiles, function () {
       stage.viewport.offsetY = 200;
     }
 
+    setUp(stage, 'level2', 'level2');
+
     stage.insert(new Q.Princess({ x: 1700, y: 360 }));
     stage.insert(new Q.Boss({ x: 1000, y: 360 }));
-
-    // stage.insert(new Q.Mashroom({x: 290, y:350 }));
     stage.insert(new Q.Mashroom({x: 300, y:350 }));
-    // stage.insert(new Q.Beer({ x: 300, y: 380 }));
-    // stage.insert(new Q.Beer({ x: 330, y: 380 }));
-    // stage.insert(new Q.Beer({ x: 360, y: 380 }));
-    // stage.insert(new Q.Beer({ x: 300, y: 380 }));
-    // stage.insert(new Q.Beer({ x: 330, y: 380 }));
-    // stage.insert(new Q.Beer({ x: 360, y: 380 }));
     stage.insert(new Q.Beer({ x: 300, y: 380 }));
     stage.insert(new Q.Beer({ x: 330, y: 380 }));
     stage.insert(new Q.Beer({ x: 360, y: 380 }));
 
-
-    var player = new Q.Alex({ x: 20, y: 20, bullets: playButtles, health: playerHealth });
-    stage.insert(player);
-    stage.add('viewport').follow(player);
-    stage.viewport.offsetX = 130;
-    stage.viewport.offsetY = 200;
-
-    stage.on('complete', function() { debugger; alert('You Won!!!')});
   });
 
   var images;
@@ -376,7 +312,7 @@ require(objectFiles, function () {
     Q.sheet('health', '/images/health.png', { tilew: 16, tileh: 16 });
     Q.sheet('bar', '/images/bar.png', { tilew: 134, tileh: 32 });
     Q.state.reset({ "bullets": 0, "health": 10000000 });
-    Q.stageScene(CURRENT_LEVEL);
+    Q.stageScene(CURRENT_LEVEL, 0);
     Q.stageScene("ui", 1);
   });
 });
