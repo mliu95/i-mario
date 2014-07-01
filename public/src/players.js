@@ -87,7 +87,7 @@ require(['./src/fireball', 'socket.io/socket.io.js'], function () {
         this.play('stand_' + this.p.direction);
       }
       if (this.p.socket){
-        this.p.socket.emit('information', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, vx: this.p.vx, vy: this.p.vy, health: this.p.health });
+        this.p.socket.emit('information', { playerId: this.p.playerId, level: this.p.level, x: this.p.x, y: this.p.y, vx: this.p.vx, vy: this.p.vy, health: this.p.health });
       }
     }
   });
@@ -97,14 +97,18 @@ require(['./src/fireball', 'socket.io/socket.io.js'], function () {
         sheet: 'player',
         sprite: 'player',
         flip: 'x',
-        health: 100,
         jumpInput: false,
         originalHealth: 500,
         scale: 0.07,
         fireWait: 0,
-        bullets: 0,
         power: 10
       });
+      if (!this.p.bullets){
+        this.p.bullets = 0;
+      }
+      if (!this.p.health){
+        this.p.health = 100;
+      }
       this.className = 'Player';
       Q.state.set("health", this.p.health);
       this.add('2d, platformerControls, animation');
@@ -121,14 +125,18 @@ require(['./src/fireball', 'socket.io/socket.io.js'], function () {
         sheet: 'player',
         // sprite: 'player',
         flip: 'x',
-        health: 100,
         jumpInput: false,
         originalHealth: 500,
         scale: 0.07,
         fireWait: 0,
-        bullets: 0,
         power: 10
       });
+      if (!this.p.bullets){
+        this.p.bullets = 0;
+      }
+      if (!this.p.health){
+        this.p.health = 100;
+      }
       this.className = 'Ghost';
       Q.state.set("health", this.p.health);
       // this.add('animation');

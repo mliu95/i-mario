@@ -31,6 +31,8 @@ Q.Sprite.extend('Enemy',{
     this.on('bump.left,bump.right,bump.bottom',function(collision) {
       if(collision.obj.isA('Player')) {
         collision.obj.trigger('damage');
+      } else if (collision.obj.isA('Ghost')){
+        return;
       }
     });
 
@@ -42,6 +44,8 @@ Q.Sprite.extend('Enemy',{
         }
         collision.obj.p.vy = -300;
         Q.audio.play("/sounds/stomp.wav");
+      } else if(collision.obj.isA('Ghost')){
+        return;
       }
     });
   },
