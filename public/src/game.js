@@ -16,8 +16,8 @@ var box, button, label, socket;
 
 require(['socket.io/socket.io.js']);
 
-// socket = io.connect('http://162.209.108.245/');
-socket = io.connect('localhost:8080');
+socket = io.connect('http://162.209.108.245/');
+// socket = io.connect('localhost:8080');
 
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },

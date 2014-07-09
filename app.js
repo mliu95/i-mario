@@ -30,5 +30,5 @@ io.on('connection', function (socket) {
   });
 });
 
-server.listen(8080);
+server.listen(80);
 console.log("Multiplayer app listening on port 80");
