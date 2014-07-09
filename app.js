@@ -17,7 +17,7 @@ io.on('connection', function (socket) {
   id++;
   totalPlays++;
   socket.playerId = id;
-  setTimeout(function(){socket.emit('selfConnect', { playerCount: playerCount, playerId: id })}, 1500);
+  setTimeout(function(){socket.emit('selfConnect', { playerCount: playerCount, playerId: id, totalPlays: totalPlays })}, 1500);
   socket.broadcast.emit('connected', { playerCount: playerCount, playerId: socket.playerId, totalPlays: totalPlays });
   console.log(new Date + " Player connected, count: " + playerCount);
   socket.on('disconnect', function (){
