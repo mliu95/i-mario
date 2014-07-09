@@ -31,14 +31,21 @@ Q.Sprite.extend('Enemy',{
     this.on('bump.left,bump.right,bump.bottom',function(collision) {
       if(collision.obj.isA('Player')) {
         collision.obj.trigger('damage');
+      } else if (collision.obj.isA('Ghost')){
+        return;
       }
     });
 
     this.on('bump.top',function(collision) {
       if(collision.obj.isA('Player')) {
         this.destroy();
+        if (this.p.healthDisplay){
+          this.p.healthDisplay.destroy();
+        }
         collision.obj.p.vy = -300;
         Q.audio.play("/sounds/stomp.wav");
+      } else if(collision.obj.isA('Ghost')){
+        return;
       }
     });
   },
@@ -104,7 +111,11 @@ require(['./src/dragon_fire'], function () {
       this.on('bump.top',function(collision) {
         if(collision.obj.isA('Player')) {
           this.destroy();
+          if (this.p.healthDisplay){
+            this.p.healthDisplay.destroy();
+          }
           collision.obj.p.vy = -300;
+          Q.audio.play("/sounds/stomp.wav");
         }
       });
     }
@@ -134,7 +145,11 @@ Q.Enemy.extend('Narwhal', {
     this.on('bump.top',function(collision) {
       if(collision.obj.isA('Player')) {
         this.destroy();
+        if (this.p.healthDisplay){
+          this.p.healthDisplay.destroy();
+        }
         collision.obj.p.vy = -300;
+        Q.audio.play("/sounds/stomp.wav");
       }
     });
   },
@@ -183,7 +198,11 @@ require(['./src/snowball'], function () {
       this.on('bump.top',function(collision) {
         if(collision.obj.isA('Player')) {
           this.destroy();
+          if (this.p.healthDisplay){
+            this.p.healthDisplay.destroy();
+          }
           collision.obj.p.vy = -300;
+          Q.audio.play("/sounds/stomp.wav");
         }
       });
     },

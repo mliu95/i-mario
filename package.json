@@ -1,7 +1,7 @@
 {
   "repository": {
-    "type":"git",
-    "url":"git@github.com:Jigarsolanki/i-mario.git"
+    "type": "git",
+    "url": "git@github.com:Jigarsolanki/i-mario.git"
   },
   "name": "QuitusMario",
   "version": "0.0.0",
@@ -13,6 +13,7 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "express": "~4.4.0",
-    "browserify": "~4.1.8"
+    "browserify": "~4.1.8",
+    "socket.io": "~1.0.6"
   }
 }
