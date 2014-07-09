@@ -28,5 +28,5 @@ io.on('connection', function (socket) {
   });
 });
 
-server.listen(3000);
-console.log("Multiplayer app listening on port 3000");
+server.listen(80);
+console.log("Multiplayer app listening on port 80");
