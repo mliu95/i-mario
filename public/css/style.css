@@ -18,6 +18,26 @@
   color:white;
 }
 
+.total{
+  z-index:1;
+  position:absolute;
+  padding-top:70px;
+  padding-right:10px;
+  right:0;
+  text-align:right;
+  color:white;
+}
+
+.instructions{
+  z-index:1;
+  position:absolute;
+  padding-top:10px;
+  padding-left:10px;
+  left:0;
+  text-align:left;
+  color:white;
+}
+
 .fireballs{
   z-index:1;
   position:absolute;

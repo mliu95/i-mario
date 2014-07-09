@@ -11,11 +11,13 @@ var CURRENT_LEVEL = 'level1';
 var UiHealth = document.getElementById("health");
 var UiFireballs = document.getElementById("fireballs");
 var UiPlayers = document.getElementById("players");
+var UiTotal = document.getElementById("total");
 var box, button, label, socket;
 
 require(['socket.io/socket.io.js']);
 
-socket = io.connect('http://162.209.108.245/');
+// socket = io.connect('http://162.209.108.245/');
+socket = io.connect('localhost:8080');
 
 Q.animations('player', {
   run_left: { frames: [3, 1, 2], rate: 1/5 },
@@ -62,6 +64,7 @@ require(objectFiles, function () {
     socket.on('connected', function (data) {
       console.log("connected");
       UiPlayers.innerHTML = "Players: " + data['playerCount'];
+      UiTotal.innerHTML = "Total Plays: " + data['totalPlays'];
     });
 
     socket.on('selfConnect', function (data) {
@@ -69,6 +72,7 @@ require(objectFiles, function () {
       if(!selfId){
         console.log("New player");
         UiPlayers.innerHTML = "Players: " + data['playerCount'];
+        UiTotal.innerHTML = "Total Plays: " + data['totalPlays'];
         selfId = data['playerId'];
         console.log(selfId);
         var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], level: level, socket: socket });
@@ -247,7 +251,7 @@ require(objectFiles, function () {
       stage.viewport.offsetY = 200;
     }
 
-    setUp(stage, 'level2', 'level2');
+    setUp(stage, 'level2', 'debug');
 
     stage.insert(new Q.Princess({ x: 1700, y: 360 }));
     stage.insert(new Q.Boss({ x: 1000, y: 360 }));
