@@ -58,7 +58,7 @@ var objectFiles = [
 ];
 
 require(objectFiles, function () {
-  function setUp (stage, level) {
+  function setUp (stage, level, nextLevel) {
     socket.on('connected', function (data) {
       console.log("connected");
       UiPlayers.innerHTML = "Players: " + data['playerCount'];
@@ -103,7 +103,8 @@ require(objectFiles, function () {
           console.log("new ghost");
           var player = new Q.Ghost({ x: 50, y: 50, level: data['level'], playerId: data['playerId'] });
           players.push({ player: player, playerId: data['playerId'] });
-          stage.insert(player);
+          console.log(stage);
+          Q.stage().insert(player);
         } else if (result.playerId != selfId){
           result.player.p.x = data['x'];
           result.player.p.y = data['y'];
@@ -127,7 +128,7 @@ require(objectFiles, function () {
       player = new Q.Alex({ x: 50, y: 50, playerId: selfId, socket: socket, level: level, health: playerHealth, bullets: playerFireballs });
       players.push({ player: player, playerId: selfId });
       Q.clearStages();
-      Q.stageScene(nextLevel, 1, { player: player });
+      Q.stageScene(nextLevel, { player: player });
     });
   }
 
@@ -159,7 +160,7 @@ require(objectFiles, function () {
       player = new Q.Alex({ x: 50, y: 50, playerId: selfId, level: CURRENT_LEVEL, socket: socket });
       players.push({ player: player, playerId: selfId });
       Q.clearStages();
-      Q.stageScene(CURRENT_LEVEL,1, { player: player });
+      Q.stageScene(CURRENT_LEVEL, { player: player });
       Q.state.set("health", player.p.health);
       Q.state.set("bullets", player.p.bullets);
     });
