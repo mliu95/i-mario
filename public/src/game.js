@@ -75,7 +75,7 @@ require(objectFiles, function () {
         UiTotal.innerHTML = "Total Plays: " + data['totalPlays'];
         selfId = data['playerId'];
         console.log(selfId);
-        var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], level: level, socket: socket });
+        var player = new Q.Alex({ x: 50, y: 50, playerId: data['playerId'], level: CURRENT_LEVEL, socket: socket });
         players.push({ player: player, playerId: data['playerId'] });
         stage.insert(player);
         stage.add('viewport').follow(player);
@@ -91,7 +91,7 @@ require(objectFiles, function () {
         return obj.playerId == data['playerId'] ;
       });
       var result = arr[0];
-      if (arr.length != 0 && result.player.p.level === level) {
+      if (arr.length != 0 && result.player.p.level === CURRENT_LEVEL) {
         result.player.p.healthDisplay.destroy();
         result.player.destroy();
       }
@@ -102,7 +102,7 @@ require(objectFiles, function () {
         return obj.playerId == data['playerId'];
       });
       var result = arr[0]
-      if(data['level'] === level){
+      if(data['level'] === CURRENT_LEVEL){
         if (arr.length == 0){
           console.log("new ghost");
           var player = new Q.Ghost({ x: 50, y: 50, level: data['level'], playerId: data['playerId'] });
@@ -251,7 +251,7 @@ require(objectFiles, function () {
       stage.viewport.offsetY = 200;
     }
 
-    setUp(stage, 'level2', 'debug');
+    setUp(stage, 'level2', 'level3');
 
     stage.insert(new Q.Princess({ x: 1700, y: 360 }));
     stage.insert(new Q.Boss({ x: 1000, y: 360 }));
@@ -259,6 +259,40 @@ require(objectFiles, function () {
     stage.insert(new Q.Beer({ x: 300, y: 380 }));
     stage.insert(new Q.Beer({ x: 330, y: 380 }));
     stage.insert(new Q.Beer({ x: 360, y: 380 }));
+
+  });
+
+
+  Q.scene('level3',function(stage) {
+    CURRENT_LEVEL = 'level4';
+
+    stage.insert(new Q.Repeater({ asset: '/images/background.png', speedX: 0.5, speedY: 0.5, scale: 1 }));
+    stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/level4.json', sheet: 'tiles' }));
+
+    if (stage.options.player) {
+      stage.insert(player);
+      stage.add('viewport').follow(player);
+      stage.viewport.offsetX = 130;
+      stage.viewport.offsetY = 200;
+    }
+
+    setUp(stage, 'level3', 'level1');
+
+    stage.insert(new Q.Narwhal({ x: 600, y: 20 }))
+    stage.insert(new Q.Narwhal({ x: 610, y: 20 }))
+    stage.insert(new Q.Narwhal({ x: 620, y: 25 }))
+    stage.insert(new Q.Narwhal({ x: 630, y: 15 }))
+    stage.insert(new Q.Narwhal({ x: 640, y: 15 }))
+    stage.insert(new Q.Narwhal({ x: 650, y: 20 }))
+    stage.insert(new Q.Narwhal({ x: 660, y: 20 }))
+    stage.insert(new Q.Narwhal({ x: 670, y: 15 }))
+    stage.insert(new Q.Narwhal({ x: 680, y: 20 }))
+    stage.insert(new Q.Narwhal({ x: 690, y: 10 }))
+    stage.insert(new Q.Narwhal({ x: 700, y: 20 }))
+    stage.insert(new Q.Narwhal({ x: 710, y: 20 }))
+    stage.insert(new Q.Narwhal({ x: 720, y: 15 }))
+    stage.insert(new Q.Narwhal({ x: 730, y: 20 }))
+    stage.insert(new Q.Princess({ x: 1200, y: 70 }));
 
   });
 
